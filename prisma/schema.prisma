@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  SUB_ADMIN
+  COMMANDER
+  CIRCLE_LEAD
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum UserGroup {
+  UNASSIGNED
+  A
+  B
+}
+
+enum SectionType {
+  TEXT
+  TEXT_IMAGE
+}
+
+model User {
+  id           String    @id @default(cuid())
+  firstName    String
+  lastName     String
+  age          Int
+  address      String
+  education    String
+  gender       Gender
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(USER)
+  group        UserGroup @default(UNASSIGNED)
+  groupId      String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  blogPosts    BlogPost[]
+  comments     Comment[]
+  eventParticipations EventParticipation[]
+  managedGroup Group?    @relation(fields: [groupId], references: [id], onDelete: SetNull)
+}
+
+model BlogPost {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String?
+  isPublished Boolean       @default(false)
+  publishedAt DateTime?
+  authorId    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  sections    BlogSection[]
+  comments    Comment[]
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+}
+
+model BlogSection {
+  id        String      @id @default(cuid())
+  postId    String
+  type      SectionType
+  sortOrder Int
+  content   Json
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  post      BlogPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@index([postId, sortOrder])
+}
+
+model Group {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  avatarUrl   String?
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  displayName String?
+  fileName  String
+  mimeType  String
+  data      String
+  createdAt DateTime @default(now())
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId, createdAt])
+}
+
+model Event {
+  id          String               @id @default(cuid())
+  title       String
+  imageUrl    String
+  description String
+  isRegistrationOpen Boolean       @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  participants EventParticipation[]
+}
+
+model EventParticipation {
+  id        String   @id @default(cuid())
+  eventId   String
+  userId    String
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId, createdAt])
+}
