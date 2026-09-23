@@ -118,6 +118,8 @@ model Event {
   title       String
   imageUrl    String
   description String
+  location    String?
+  eventTime   DateTime?
   isRegistrationOpen Boolean       @default(true)
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidIdentifier, normalizeIdentifier } from "@/lib/identity";
 
 export const registerSchema = z.object({
   firstName: z.string().trim().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
@@ -7,7 +8,14 @@ export const registerSchema = z.object({
   address: z.string().trim().min(5, "آدرس باید کامل‌تر باشد"),
   education: z.string().trim().min(2, "تحصیلات را وارد کنید"),
   gender: z.enum(["MALE", "FEMALE"]),
-  email: z.email("ایمیل نامعتبر است"),
+  identifier: z
+    .string()
+    .trim()
+    .min(5, "ایمیل یا شماره همراه را وارد کنید")
+    .refine((value) => isValidIdentifier(value), {
+      message: "ایمیل یا شماره همراه نامعتبر است",
+    })
+    .transform((value) => normalizeIdentifier(value)),
   password: z
     .string()
     .min(8, "رمز عبور باید حداقل ۸ کاراکتر باشد")
@@ -53,8 +61,27 @@ export const eventSchema = z.object({
   title: z.string().trim().min(3, "عنوان رویداد کوتاه است"),
   imageUrl: z.string().url("لینک تصویر رویداد نامعتبر است"),
   description: z.string().trim().min(10, "توضیحات رویداد کوتاه است"),
+  location: z.preprocess(
+    (value) => {
+      if (typeof value === "string" && value.trim() === "") return undefined;
+      return value;
+    },
+    z.string().trim().min(2, "مکان رویداد کوتاه است").optional(),
+  ),
+  eventTime: z.preprocess(
+    (value) => {
+      if (typeof value === "string" && value.trim() === "") return undefined;
+      return value;
+    },
+    z.coerce.date({ error: "زمان رویداد نامعتبر است" }).optional(),
+  ),
   isRegistrationOpen: z.boolean().default(true),
 });
+
+export const eventUpdateSchema = eventSchema.partial().refine(
+  (value) => Object.keys(value).length > 0,
+  "حداقل یک فیلد برای بروزرسانی لازم است",
+);
 
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type BlogInput = z.infer<typeof blogSchema>;

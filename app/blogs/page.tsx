@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendarDays, UserRound } from "lucide-react";
 
 import { db } from "@/lib/db";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = buildPageMetadata({
+  title: "همه روایت‌ها",
+  description: "فهرست کامل روایت‌های منتشرشده گروه فرهنگی امام رضا(ع).",
+  canonicalPath: "/blogs",
+});
 
 export default async function BlogsPage() {
   const blogs = await db.blogPost.findMany({

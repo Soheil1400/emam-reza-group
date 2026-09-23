@@ -1,10 +1,17 @@
+import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
 import { EventsCards } from "@/components/events/events-cards";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = buildPageMetadata({
+  title: "رویدادها",
+  description: "رویدادهای فرهنگی گروه امام رضا(ع) و امکان اعلام حضور در برنامه‌ها.",
+  canonicalPath: "/events",
+});
 
 export default async function EventsPage() {
   const session = await getServerSession(authOptions);
@@ -36,6 +43,8 @@ export default async function EventsPage() {
           title: event.title,
           imageUrl: event.imageUrl,
           description: event.description,
+          location: event.location,
+          eventTime: event.eventTime ? event.eventTime.toISOString() : null,
           isRegistrationOpen: event.isRegistrationOpen,
         }))}
         joinedEventIds={joinedEventIds}

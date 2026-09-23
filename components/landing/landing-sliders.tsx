@@ -4,40 +4,40 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/pagination";
 
-import Image from "next/image";
 import { Autoplay, EffectCards, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const heroSlides = [
   {
-    title: "رویدادهای فرهنگی مسجد",
-    subtitle: "برنامه‌های هفتگی، کلاس‌ها و نشست‌های آموزشی",
+    title: "بنر ۱",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3hdl00000il04mmb8s0lj",
   },
   {
-    title: "همراهی با سفرهای معنوی",
-    subtitle: "گزارش‌ها و تصاویر از سفرهای زیارتی و فرهنگی",
+    title: "بنر ۲",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3gwfb0001js04bfnfhgrb",
   },
   {
-    title: "جامعه فعال و همدل",
-    subtitle: "ثبت‌نام، عضویت در حلقه‌ها و دنبال‌کردن اخبار",
+    title: "بنر ۳",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3gdj70000js0468dz3zdy",
   },
 ];
 
 const travelSlides = [
   {
-    title: "کربلا - سال اول",
-    text: "شروع مسیر با حضور نوجوانان و خانواده‌ها در برنامه‌های معنوی.",
-    icon: "/globe.svg",
+    title: "گالری ۱",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3lpzl0003il04pvgztm01",
   },
   {
-    title: "مشهد - سال اول",
-    text: "اردوی فرهنگی همراه با کارگاه‌های آموزشی و نشست پرسش و پاسخ.",
-    icon: "/file.svg",
+    title: "گالری ۲",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3li8n0002il046xrglwup",
   },
   {
-    title: "قم - سال دوم",
-    text: "تکمیل برنامه‌های تربیتی و توسعه تیم اجرایی جوانان مسجد.",
-    icon: "/window.svg",
+    title: "گالری ۳",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3la7y0001il0483zg3sl0",
+  },
+  {
+    title: "گالری ۴",
+    imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3l2y80002js0496yu03jf",
   },
 ];
 
@@ -52,9 +52,10 @@ export function HeroSlider() {
     >
       {heroSlides.map((slide) => (
         <SwiperSlide key={slide.title}>
-          <div className="flex min-h-72 flex-col items-center justify-center bg-gradient-to-br from-emerald-900 via-emerald-700 to-teal-600 px-6 text-center text-white">
-            <h2 className="text-2xl font-bold md:text-4xl">{slide.title}</h2>
-            <p className="mt-3 max-w-2xl text-sm text-emerald-50 md:text-lg">{slide.subtitle}</p>
+          <div className="relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={slide.imageUrl} alt={slide.title} className="h-72 w-full object-cover md:h-96" />
+            <div className="absolute inset-0 bg-black/25" />
           </div>
         </SwiperSlide>
       ))}
@@ -65,18 +66,18 @@ export function HeroSlider() {
 export function TravelCardsSlider() {
   return (
     <div>
-      <h3 className="mb-6 text-center text-2xl font-bold text-emerald-950">سفر دو ساله ما</h3>
+      <h3 className="mb-6 text-center text-2xl font-bold text-emerald-950">گالگری</h3>
       <Swiper effect="cards" grabCursor modules={[EffectCards]} className="h-80 w-80 max-w-full">
         {travelSlides.map((slide) => (
           <SwiperSlide key={slide.title}>
-            <div className="flex h-full flex-col items-center justify-center rounded-3xl border border-emerald-700/20 bg-white p-6 text-center shadow-lg">
-              <Image src={slide.icon} alt="" width={64} height={64} className="mb-4 h-16 w-16" />
-              <h4 className="text-xl font-semibold text-emerald-900">{slide.title}</h4>
-              <p className="mt-2 text-sm text-zinc-700">{slide.text}</p>
+            <div className="h-full overflow-hidden rounded-3xl border border-emerald-700/20 bg-white shadow-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={slide.imageUrl} alt={slide.title} className="h-full w-full object-cover" />
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
+      <p className="mt-4 text-center text-base font-semibold text-zinc-700">مشهد ۱۴۰۴</p>
     </div>
   );
 }

@@ -12,6 +12,8 @@ type EventCard = {
   title: string;
   imageUrl: string;
   description: string;
+  location: string | null;
+  eventTime: string | null;
   isRegistrationOpen: boolean;
 };
 
@@ -71,6 +73,12 @@ export function EventsCards({
               <div className="p-4">
                 <h2 className="text-xl font-bold text-zinc-900">{event.title}</h2>
                 <p className="mt-2 text-sm leading-7 text-zinc-700">{event.description}</p>
+                {event.location ? <p className="mt-1 text-xs text-zinc-600">مکان: {event.location}</p> : null}
+                {event.eventTime ? (
+                  <p className="mt-1 text-xs text-zinc-600">
+                    زمان: {new Date(event.eventTime).toLocaleString("fa-IR")}
+                  </p>
+                ) : null}
 
                 <div className="mt-4">
                   {isLoggedIn ? (

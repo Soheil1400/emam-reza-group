@@ -9,7 +9,7 @@ import { Snackbar } from "@/components/ui/snackbar";
 
 export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
 
     const result = await signIn("credentials", {
       redirect: false,
-      email,
+      identifier,
       password,
       callbackUrl,
     });
@@ -34,8 +34,8 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
     setLoading(false);
 
     if (result?.error) {
-      setError("ایمیل یا رمز عبور اشتباه است.");
-      setSnackbar({ show: true, message: "ایمیل یا رمز عبور اشتباه است", kind: "error" });
+      setError("ایمیل/شماره همراه یا رمز عبور اشتباه است.");
+      setSnackbar({ show: true, message: "ایمیل/شماره همراه یا رمز عبور اشتباه است", kind: "error" });
       setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
       return;
     }
@@ -55,12 +55,12 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل</span>
+            <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل یا شماره همراه</span>
             <input
-              type="email"
+              type="text"
               required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              value={identifier}
+              onChange={(event) => setIdentifier(event.target.value)}
               className="w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-emerald-600 focus:ring"
             />
           </label>

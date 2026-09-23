@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
+import { normalizeIdentifier } from "@/lib/identity";
 import { registerSchema } from "@/lib/validations";
 
 export async function POST(request: Request) {
@@ -15,11 +16,12 @@ export async function POST(request: Request) {
     );
   }
 
-  const { email, password, ...rest } = parsed.data;
+  const { identifier, password, ...rest } = parsed.data;
+  const normalizedIdentifier = normalizeIdentifier(identifier);
 
-  const existing = await db.user.findUnique({ where: { email } });
+  const existing = await db.user.findUnique({ where: { email: normalizedIdentifier } });
   if (existing) {
-    return NextResponse.json({ message: "این ایمیل قبلا ثبت شده است" }, { status: 409 });
+    return NextResponse.json({ message: "این ایمیل یا شماره همراه قبلا ثبت شده است" }, { status: 409 });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
@@ -27,7 +29,7 @@ export async function POST(request: Request) {
   await db.user.create({
     data: {
       ...rest,
-      email,
+      email: normalizedIdentifier,
       passwordHash,
     },
   });

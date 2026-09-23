@@ -33,6 +33,8 @@ export default async function AdminEventsPage() {
           title: event.title,
           imageUrl: event.imageUrl,
           description: event.description,
+          location: event.location,
+          eventTime: event.eventTime ? event.eventTime.toISOString() : null,
           isRegistrationOpen: event.isRegistrationOpen,
           participants: event.participants.map((item) => ({
             id: item.user.id,

@@ -28,7 +28,7 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
     setMessage("");
 
     const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("email") ?? "");
+    const identifier = String(formData.get("identifier") ?? "");
     const password = String(formData.get("password") ?? "");
     const payload = {
       firstName: formData.get("firstName"),
@@ -37,7 +37,7 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
       address: formData.get("address"),
       education: formData.get("education"),
       gender,
-      email,
+      identifier,
       password,
     };
 
@@ -58,7 +58,7 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
 
     const signInResult = await signIn("credentials", {
       redirect: false,
-      email,
+      identifier,
       password,
       callbackUrl,
     });
@@ -118,8 +118,13 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
             </select>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل</span>
-            <input name="email" type="email" required className="w-full rounded-xl border border-zinc-300 px-3 py-2" />
+            <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل یا شماره همراه</span>
+            <input
+              name="identifier"
+              type="text"
+              required
+              className="w-full rounded-xl border border-zinc-300 px-3 py-2"
+            />
           </label>
           <label className="block md:col-span-2">
             <span className="mb-1 block text-sm font-medium text-zinc-700">رمز عبور (حداقل ۸ کاراکتر)</span>

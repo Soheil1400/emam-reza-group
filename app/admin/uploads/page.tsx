@@ -4,6 +4,10 @@ import { db } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export default async function AdminUploadsPage() {
+  const baseUrl =
+    process.env.NEXTAUTH_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+
   const assets = await db.mediaAsset.findMany({
     orderBy: { createdAt: "desc" },
     select: {
@@ -23,7 +27,7 @@ export default async function AdminUploadsPage() {
           displayName: asset.displayName ?? asset.fileName,
           fileName: asset.fileName,
           createdAt: asset.createdAt.toISOString(),
-          url: `/api/uploads/${asset.id}`,
+          url: `${baseUrl}/api/uploads/${asset.id}`,
         }))}
       />
     </section>

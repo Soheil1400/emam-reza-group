@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { CalendarDays, UserRound } from "lucide-react";
@@ -5,8 +6,54 @@ import { CalendarDays, UserRound } from "lucide-react";
 import { CommentsSection } from "@/components/blog/comments-section";
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { DEFAULT_DESCRIPTION, SITE_NAME } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await db.blogPost.findUnique({
+    where: { slug },
+    select: {
+      title: true,
+      excerpt: true,
+      isPublished: true,
+    },
+  });
+
+  if (!post || !post.isPublished) {
+    return {
+      title: "روایت یافت نشد",
+      description: DEFAULT_DESCRIPTION,
+      alternates: { canonical: `/blog/${slug}` },
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const description = post.excerpt?.trim() || `مطالعه روایت «${post.title}» در ${SITE_NAME}`;
+  return {
+    title: post.title,
+    description,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: {
+      title: post.title,
+      description,
+      url: `/blog/${slug}`,
+      type: "article",
+      locale: "fa_IR",
+      siteName: SITE_NAME,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description,
+    },
+  };
+}
 
 export default async function BlogPostPage({
   params,

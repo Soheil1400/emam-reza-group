@@ -1,11 +1,17 @@
-import Image from "next/image";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendarDays, UserRound } from "lucide-react";
 
 import { HeroSlider, TravelCardsSlider } from "@/components/landing/landing-sliders";
 import { db } from "@/lib/db";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = buildPageMetadata({
+  title: "صفحه اصلی",
+  description: "معرفی گروه فرهنگی امام رضا(ع)، گالری تصاویر و جدیدترین روایت‌ها.",
+  canonicalPath: "/",
+});
 
 export default async function Home() {
   const blogs = await db.blogPost.findMany({
@@ -26,15 +32,21 @@ export default async function Home() {
         <section className="grid gap-8 rounded-3xl bg-white p-6 shadow-md md:grid-cols-2 md:p-10">
           <div>
             <h1 className="text-3xl font-black leading-tight text-emerald-900 md:text-4xl">
-              معرفی مجموعه فرهنگی مسجد
+              معرفی گروه فرهنگی امام رضا (ع)
             </h1>
             <p className="mt-4 text-base leading-8 text-zinc-700">
-              این مجموعه با هدف رشد معنوی، آموزشی و اجتماعی جوانان و خانواده‌ها شکل گرفته و تلاش
-              می‌کند با برنامه‌های منظم، فضای پویا و دلنشینی برای همه اعضا فراهم کند.
+              🌺توی این عالم هستی که همش رو به فناست
+              <br />
+              به خدا یه دل دارم اونم مال امام رضاست ✨
             </p>
           </div>
-          <div className="flex items-center justify-center rounded-2xl bg-emerald-50 p-6">
-            <Image src="/vercel.svg" alt="تصویر معرفی" width={180} height={180} className="h-auto" />
+          <div className="overflow-hidden rounded-2xl border border-emerald-100">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://masjid-portal-site.vercel.app/api/uploads/cmue3hdl00000il04mmb8s0lj"
+              alt="معرفی گروه فرهنگی امام رضا (ع)"
+              className="h-full min-h-64 w-full object-cover"
+            />
           </div>
         </section>
 

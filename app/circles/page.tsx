@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { db } from "@/lib/db";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = buildPageMetadata({
+  title: "معرفی حلقه‌ها",
+  description: "معرفی حلقه‌های فرهنگی، آواتار، توضیح و تصاویر فعالیت‌ها.",
+  canonicalPath: "/circles",
+});
 
 export default async function CirclesPage() {
   const circles = await db.group.findMany({

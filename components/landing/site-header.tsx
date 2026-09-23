@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { CalendarDays, LogIn, Menu, Mosque, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { LogoutButton } from "@/components/admin/logout-button";
 
@@ -17,23 +17,33 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
     setOpen(false);
   }
 
+  useEffect(() => {
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [open]);
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-emerald-900/10 bg-white/90 backdrop-blur">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <Mosque className="h-5 w-5 text-emerald-800" />
-            <span className="text-sm font-semibold text-emerald-900">گروه فرهنگی امام رضا(ع)</span>
-          </Link>
-
-          <button
-            type="button"
-            className="rounded-lg border border-zinc-300 p-2 md:hidden"
-            onClick={() => setOpen((prev) => !prev)}
-            aria-label="باز و بسته کردن منوی هدر"
-          >
-            {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="rounded-lg border border-zinc-300 p-2 md:hidden"
+              onClick={() => setOpen((prev) => !prev)}
+              aria-label="باز و بسته کردن منوی هدر"
+            >
+              {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+            <Link href="/" className="flex items-center gap-2">
+              <Mosque className="h-5 w-5 text-emerald-800" />
+              <span className="text-sm font-semibold text-emerald-900">گروه فرهنگی امام رضا(ع)</span>
+            </Link>
+          </div>
 
           <nav className="hidden items-center gap-2 md:flex">
             <Link
@@ -94,15 +104,22 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
         </div>
       </header>
 
-      {open ? (
-        <div className="fixed inset-0 z-50 md:hidden">
-          <button
-            type="button"
-            aria-label="بستن منوی هدر"
-            className="absolute inset-y-0 left-0 w-[30%] bg-black/40"
-            onClick={closeMenu}
-          />
-          <nav className="absolute inset-y-0 right-0 w-[70%] overflow-y-auto bg-white p-4 shadow-2xl">
+      <div
+        className={`fixed inset-0 z-50 transition-opacity duration-300 ease-out md:hidden ${
+          open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      >
+        <button
+          type="button"
+          aria-label="بستن منوی هدر"
+          className="absolute inset-y-0 left-0 w-[30%] bg-black/40"
+          onClick={closeMenu}
+        />
+        <nav
+          className={`absolute inset-y-0 right-0 w-[70%] overflow-y-auto bg-white p-4 shadow-2xl transition-transform duration-300 ease-out ${
+            open ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-semibold text-zinc-700">منوی سایت</p>
               <button
@@ -157,9 +174,8 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                 </>
               )}
             </div>
-          </nav>
-        </div>
-      ) : null}
+        </nav>
+      </div>
     </>
   );
 }

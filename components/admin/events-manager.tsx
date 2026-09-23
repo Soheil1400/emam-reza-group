@@ -20,6 +20,8 @@ type EventItem = {
   title: string;
   imageUrl: string;
   description: string;
+  location: string | null;
+  eventTime: string | null;
   isRegistrationOpen: boolean;
   participants: EventParticipant[];
 };
@@ -30,7 +32,10 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
   const [title, setTitle] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [eventTime, setEventTime] = useState("");
   const [saving, setSaving] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [snackbar, setSnackbar] = useState<{
     show: boolean;
@@ -51,6 +56,8 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
         title: string;
         imageUrl: string;
         description: string;
+        location: string | null;
+        eventTime: string | null;
         isRegistrationOpen: boolean;
         participants: Array<{
           user: {
@@ -75,6 +82,8 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
         title: event.title,
         imageUrl: event.imageUrl,
         description: event.description,
+        location: event.location,
+        eventTime: event.eventTime,
         isRegistrationOpen: event.isRegistrationOpen,
         participants: event.participants.map((item) => ({
           id: item.user.id,
@@ -86,30 +95,50 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
     );
   }
 
-  async function createEvent() {
-    setSaving(true);
-    const response = await fetch("/api/admin/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title,
-        imageUrl,
-        description,
-        isRegistrationOpen: true,
-      }),
-    });
-    const data = (await response.json()) as { message?: string };
-    setSaving(false);
-
-    if (!response.ok) {
-      showMessage("error", data.message ?? "ایجاد رویداد ناموفق بود");
-      return;
-    }
-
+  function resetForm() {
     setTitle("");
     setImageUrl("");
     setDescription("");
-    showMessage("success", "رویداد با موفقیت ایجاد شد");
+    setLocation("");
+    setEventTime("");
+    setEditingId(null);
+  }
+
+  async function saveEvent() {
+    setSaving(true);
+    const isEditing = Boolean(editingId);
+    const url = isEditing ? `/api/admin/events/${editingId}` : "/api/admin/events";
+    const payload = isEditing
+      ? {
+          title,
+          imageUrl,
+          description,
+          location,
+          eventTime,
+        }
+      : {
+          title,
+          imageUrl,
+          description,
+          location,
+          eventTime,
+          isRegistrationOpen: true,
+        };
+    const finalResponse = await fetch(url, {
+      method: isEditing ? "PATCH" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = (await finalResponse.json()) as { message?: string };
+    setSaving(false);
+
+    if (!finalResponse.ok) {
+      showMessage("error", data.message ?? "ذخیره رویداد ناموفق بود");
+      return;
+    }
+
+    resetForm();
+    showMessage("success", data.message ?? (isEditing ? "رویداد بروزرسانی شد" : "رویداد ایجاد شد"));
     await refreshEvents();
     router.refresh();
   }
@@ -151,7 +180,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
   return (
     <section className="space-y-6">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <h2 className="text-xl font-bold">ایجاد رویداد جدید</h2>
+        <h2 className="text-xl font-bold">{editingId ? "ویرایش رویداد" : "ایجاد رویداد جدید"}</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           <input
             value={title}
@@ -165,6 +194,18 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
             placeholder="لینک تصویر رویداد"
             className="rounded-xl border border-zinc-300 px-3 py-2"
           />
+          <input
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+            placeholder="مکان رویداد (اختیاری)"
+            className="rounded-xl border border-zinc-300 px-3 py-2"
+          />
+          <input
+            type="datetime-local"
+            value={eventTime}
+            onChange={(event) => setEventTime(event.target.value)}
+            className="rounded-xl border border-zinc-300 px-3 py-2"
+          />
         </div>
         <ImageUrlPreview url={imageUrl} alt={title || "رویداد"} />
         <textarea
@@ -176,12 +217,21 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
         />
         <button
           type="button"
-          onClick={createEvent}
+          onClick={saveEvent}
           disabled={saving}
           className="mt-3 rounded-xl bg-emerald-700 px-4 py-2 text-sm text-white disabled:opacity-70"
         >
-          {saving ? "در حال ذخیره..." : "ایجاد رویداد"}
+          {saving ? "در حال ذخیره..." : editingId ? "ذخیره تغییرات رویداد" : "ایجاد رویداد"}
         </button>
+        {editingId ? (
+          <button
+            type="button"
+            onClick={resetForm}
+            className="mr-2 mt-3 rounded-xl border border-zinc-300 px-4 py-2 text-sm"
+          >
+            انصراف
+          </button>
+        ) : null}
       </div>
 
       <div className="space-y-4">
@@ -191,6 +241,12 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
               <div>
                 <h3 className="text-lg font-bold text-zinc-900">{event.title}</h3>
                 <p className="mt-2 text-sm text-zinc-700">{event.description}</p>
+                {event.location ? <p className="mt-1 text-xs text-zinc-600">مکان: {event.location}</p> : null}
+                {event.eventTime ? (
+                  <p className="mt-1 text-xs text-zinc-600">
+                    زمان: {new Date(event.eventTime).toLocaleString("fa-IR")}
+                  </p>
+                ) : null}
                 <p className="mt-1 text-xs text-zinc-500">لینک تصویر: {event.imageUrl}</p>
                 <ImageUrlPreview url={event.imageUrl} alt={event.title} className="h-24 w-36" />
                 <p className="mt-1 text-xs text-zinc-500">
@@ -208,6 +264,22 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
                   }`}
                 >
                   {event.isRegistrationOpen ? "غیرفعال‌کردن ثبت‌نام" : "فعال‌کردن ثبت‌نام"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingId(event.id);
+                    setTitle(event.title);
+                    setImageUrl(event.imageUrl);
+                    setDescription(event.description);
+                    setLocation(event.location ?? "");
+                    setEventTime(
+                      event.eventTime ? new Date(event.eventTime).toISOString().slice(0, 16) : "",
+                    );
+                  }}
+                  className="rounded-lg border border-zinc-300 px-3 py-1.5 text-sm"
+                >
+                  ویرایش
                 </button>
                 <button
                   type="button"

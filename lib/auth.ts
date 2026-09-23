@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 
 import { db } from "@/lib/db";
+import { normalizeIdentifier } from "@/lib/identity";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -15,16 +16,18 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        email: { label: "Email", type: "email" },
+        identifier: { label: "Email or Mobile", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials.password) {
+        if (!credentials?.identifier || !credentials.password) {
           return null;
         }
 
+        const identifier = normalizeIdentifier(credentials.identifier);
+
         const user = await db.user.findUnique({
-          where: { email: credentials.email },
+          where: { email: identifier },
         });
 
         if (!user) {
