@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
+import { ImageUrlInput } from "@/components/admin/image-url-input";
 import { ImageUrlPreview } from "@/components/ui/image-url-preview";
 import { Snackbar } from "@/components/ui/snackbar";
 
@@ -193,20 +194,13 @@ export function BlogBuilderForm({ initialData }: { initialData: InitialData }) {
               {section.type === "TEXT_IMAGE" ? (
                 <label className="block">
                   <span className="mb-1 block text-sm font-medium">لینک تصویر</span>
-                  <input
+                  <ImageUrlInput
                     value={section.imageUrl ?? ""}
-                    onChange={(event) => updateSection(index, { imageUrl: event.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                    className="w-full rounded-xl border border-zinc-300 px-3 py-2"
+                    onChange={(next) => updateSection(index, { imageUrl: next })}
+                    placeholder="لینک تصویر سکشن"
+                    uploadNamePrefix={`blog-section-${index + 1}`}
                   />
                   <ImageUrlPreview url={section.imageUrl} alt={section.title || `سکشن ${index + 1}`} />
-                  <p className="mt-2 text-xs text-zinc-500">
-                    برای گرفتن لینک تصویر از صفحه{" "}
-                    <a href="/admin/uploads" className="font-semibold text-emerald-700 underline">
-                      آپلود تصویر
-                    </a>{" "}
-                    استفاده کنید.
-                  </p>
                 </label>
               ) : null}
             </div>

@@ -66,7 +66,7 @@ export function HeroSlider() {
 export function TravelCardsSlider() {
   return (
     <div>
-      <h3 className="mb-6 text-center text-2xl font-bold text-emerald-950">گالگری</h3>
+      <h3 className="mb-6 text-center text-2xl font-bold text-emerald-950">گالری</h3>
       <Swiper effect="cards" grabCursor modules={[EffectCards]} className="h-80 w-80 max-w-full">
         {travelSlides.map((slide) => (
           <SwiperSlide key={slide.title}>

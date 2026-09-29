@@ -4,6 +4,7 @@ import { Trash2, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { ImageUrlInput } from "@/components/admin/image-url-input";
 import { Snackbar } from "@/components/ui/snackbar";
 import { ImageUrlPreview } from "@/components/ui/image-url-preview";
 import { formatFaNumber } from "@/lib/persian";
@@ -188,11 +189,11 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
             placeholder="عنوان رویداد"
             className="rounded-xl border border-zinc-300 px-3 py-2"
           />
-          <input
+          <ImageUrlInput
             value={imageUrl}
-            onChange={(event) => setImageUrl(event.target.value)}
+            onChange={setImageUrl}
             placeholder="لینک تصویر رویداد"
-            className="rounded-xl border border-zinc-300 px-3 py-2"
+            uploadNamePrefix="event-image"
           />
           <input
             value={location}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { ImageUrlInput } from "@/components/admin/image-url-input";
 import { Snackbar } from "@/components/ui/snackbar";
 import { ImageUrlPreview } from "@/components/ui/image-url-preview";
 import { formatFaNumber } from "@/lib/persian";
@@ -116,18 +117,18 @@ export function GroupsManager({ initialGroups }: { initialGroups: GroupItem[] })
             placeholder="توضیح حلقه (اختیاری)"
             className="rounded-xl border border-zinc-300 px-3 py-2"
           />
-          <input
+          <ImageUrlInput
             value={avatarUrl}
-            onChange={(event) => setAvatarUrl(event.target.value)}
+            onChange={setAvatarUrl}
             placeholder="لینک آواتار حلقه (اختیاری)"
-            className="rounded-xl border border-zinc-300 px-3 py-2"
+            uploadNamePrefix="group-avatar"
           />
           <ImageUrlPreview url={avatarUrl} alt="پیش نمایش آواتار حلقه" className="h-20 w-20" />
-          <input
+          <ImageUrlInput
             value={imageUrl}
-            onChange={(event) => setImageUrl(event.target.value)}
+            onChange={setImageUrl}
             placeholder="لینک تصویر بزرگ حلقه (اختیاری)"
-            className="rounded-xl border border-zinc-300 px-3 py-2"
+            uploadNamePrefix="group-image"
           />
           <ImageUrlPreview url={imageUrl} alt="پیش نمایش تصویر حلقه" className="h-24 w-40" />
         </div>
