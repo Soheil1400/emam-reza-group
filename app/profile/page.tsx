@@ -42,5 +42,27 @@ export default async function ProfilePage() {
     },
   });
 
-  return <ProfileForm initialData={profile ?? {}} />;
+  const initialData = profile
+    ? {
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        nationalCode: profile.nationalCode ?? undefined,
+        educationStage: profile.educationStage ?? undefined,
+        fatherName: profile.fatherName ?? undefined,
+        birthDateJalali: profile.birthDateJalali ?? undefined,
+        birthProvince: profile.birthProvince ?? undefined,
+        currentCircle: profile.currentCircle ?? undefined,
+        personnelPhotoUrl: profile.personnelPhotoUrl ?? undefined,
+        idCardPhotoUrl: profile.idCardPhotoUrl ?? undefined,
+        discoverSource: profile.discoverSource ?? undefined,
+        mobile: profile.mobile ?? undefined,
+        motherMobile: profile.motherMobile ?? undefined,
+        fatherMobile: profile.fatherMobile ?? undefined,
+        homePhone: profile.homePhone ?? undefined,
+        fatherJob: profile.fatherJob ?? undefined,
+        homeAddress: profile.homeAddress ?? undefined,
+      }
+    : {};
+
+  return <ProfileForm initialData={initialData} />;
 }
