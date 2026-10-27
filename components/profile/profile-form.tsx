@@ -15,6 +15,9 @@ import {
   Users,
 } from "lucide-react";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persianFa from "react-date-object/locales/persian_fa";
 
 import { LogoutButton } from "@/components/admin/logout-button";
 import { Snackbar } from "@/components/ui/snackbar";
@@ -76,6 +79,21 @@ function persianToLatinDigits(value: string) {
     .replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧٨٩".indexOf(d).toString());
 }
 
+function extractJalaliDate(value: unknown): string {
+  if (!value) return "";
+
+  if (typeof value === "string") return value;
+
+  if (typeof value === "object" && "format" in value) {
+    const formatter = (value as { format?: unknown }).format;
+    if (typeof formatter === "function") {
+      return formatter.call(value, "YYYY/MM/DD") as string;
+    }
+  }
+
+  return "";
+}
+
 function LabeledInput({
   icon,
   label,
@@ -111,7 +129,13 @@ function LabeledInput({
   );
 }
 
-export function ProfileForm({ initialData }: { initialData: Partial<ProfileData> }) {
+export function ProfileForm({
+  initialData,
+  circles,
+}: {
+  initialData: Partial<ProfileData>;
+  circles: string[];
+}) {
   const [form, setForm] = useState<ProfileData>({
     firstName: initialData.firstName ?? "",
     lastName: initialData.lastName ?? "",
@@ -279,14 +303,22 @@ export function ProfileForm({ initialData }: { initialData: Partial<ProfileData>
             onChange={(event) => updateField("fatherName", event.target.value)}
           />
 
-          <LabeledInput
-            icon={<CalendarDays className="h-4 w-4 text-emerald-700" />}
-            label="تاریخ تولد (شمسی)"
-            name="birthDateJalali"
-            value={form.birthDateJalali}
-            placeholder="مثال: 1382/07/21"
-            onChange={(event) => updateField("birthDateJalali", event.target.value)}
-          />
+          <label className="block">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+              <CalendarDays className="h-4 w-4 text-emerald-700" />
+              تاریخ تولد (شمسی)
+            </span>
+            <DatePicker
+              value={form.birthDateJalali || undefined}
+              calendar={persian}
+              locale={persianFa}
+              format="YYYY/MM/DD"
+              calendarPosition="bottom-right"
+              onChange={(value) => updateField("birthDateJalali", extractJalaliDate(value))}
+              inputClass="w-full rounded-2xl border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+              placeholder="مثال: 1382/07/21"
+            />
+          </label>
 
           <label className="block">
             <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
@@ -309,13 +341,24 @@ export function ProfileForm({ initialData }: { initialData: Partial<ProfileData>
             </div>
           </label>
 
-          <LabeledInput
-            icon={<Users className="h-4 w-4 text-emerald-700" />}
-            label="شما در حال حاضر عضو کدام حلقه هستید؟"
-            name="currentCircle"
-            value={form.currentCircle}
-            onChange={(event) => updateField("currentCircle", event.target.value)}
-          />
+          <label className="block">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+              <Users className="h-4 w-4 text-emerald-700" />
+              شما در حال حاضر عضو کدام حلقه هستید؟
+            </span>
+            <input
+              list="circle-options"
+              value={form.currentCircle}
+              onChange={(event) => updateField("currentCircle", event.target.value)}
+              placeholder={circles.length > 0 ? "نام حلقه را جستجو یا انتخاب کنید" : "نام حلقه را وارد کنید"}
+              className="w-full rounded-2xl border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+            />
+            <datalist id="circle-options">
+              {circles.map((circleName) => (
+                <option key={circleName} value={circleName} />
+              ))}
+            </datalist>
+          </label>
 
           <label className="block md:col-span-2">
             <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">

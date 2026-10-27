@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 
 import { SiteFooter } from "@/components/landing/site-footer";
 import { SiteHeader } from "@/components/landing/site-header";
+import { PushNotificationSetup } from "@/components/pwa/push-notification-setup";
 import { NavigationProgress } from "@/components/ui/navigation-progress";
 import { authOptions } from "@/lib/auth";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -49,6 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       className={`${vazir.variable} ${geistMono.variable} h-full overflow-x-hidden antialiased`}
     >
       <body className="min-h-full overflow-x-hidden flex flex-col">
+        <PushNotificationSetup />
         <NavigationProgress />
         <SiteHeader
           session={

@@ -19,28 +19,34 @@ export default async function ProfilePage() {
     redirect("/login?callbackUrl=/profile");
   }
 
-  const profile = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      firstName: true,
-      lastName: true,
-      nationalCode: true,
-      educationStage: true,
-      fatherName: true,
-      birthDateJalali: true,
-      birthProvince: true,
-      currentCircle: true,
-      personnelPhotoUrl: true,
-      idCardPhotoUrl: true,
-      discoverSource: true,
-      mobile: true,
-      motherMobile: true,
-      fatherMobile: true,
-      homePhone: true,
-      fatherJob: true,
-      homeAddress: true,
-    },
-  });
+  const [profile, circles] = await Promise.all([
+    db.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        firstName: true,
+        lastName: true,
+        nationalCode: true,
+        educationStage: true,
+        fatherName: true,
+        birthDateJalali: true,
+        birthProvince: true,
+        currentCircle: true,
+        personnelPhotoUrl: true,
+        idCardPhotoUrl: true,
+        discoverSource: true,
+        mobile: true,
+        motherMobile: true,
+        fatherMobile: true,
+        homePhone: true,
+        fatherJob: true,
+        homeAddress: true,
+      },
+    }),
+    db.group.findMany({
+      select: { name: true },
+      orderBy: { name: "asc" },
+    }),
+  ]);
 
   const initialData = profile
     ? {
@@ -64,5 +70,5 @@ export default async function ProfilePage() {
       }
     : {};
 
-  return <ProfileForm initialData={initialData} />;
+  return <ProfileForm initialData={initialData} circles={circles.map((circle) => circle.name)} />;
 }

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 
 import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { notifyNewEvent } from "@/lib/push";
 import { eventSchema } from "@/lib/validations";
 
 async function ensureAdmin() {
@@ -60,6 +61,9 @@ export async function POST(request: Request) {
   const event = await db.event.create({
     data: parsed.data,
   });
+
+  // Notify subscribed PWA users without blocking event creation success.
+  void notifyNewEvent({ title: event.title });
 
   return NextResponse.json({ event }, { status: 201 });
 }
