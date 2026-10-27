@@ -308,16 +308,19 @@ export function ProfileForm({
               <CalendarDays className="h-4 w-4 text-emerald-700" />
               تاریخ تولد (شمسی)
             </span>
-            <DatePicker
-              value={form.birthDateJalali || undefined}
-              calendar={persian}
-              locale={persianFa}
-              format="YYYY/MM/DD"
-              calendarPosition="bottom-right"
-              onChange={(value) => updateField("birthDateJalali", extractJalaliDate(value))}
-              inputClass="w-full rounded-2xl border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-              placeholder="مثال: 1382/07/21"
-            />
+            <div className="w-full">
+              <DatePicker
+                value={form.birthDateJalali || undefined}
+                calendar={persian}
+                locale={persianFa}
+                format="YYYY/MM/DD"
+                calendarPosition="bottom-right"
+                onChange={(value) => updateField("birthDateJalali", extractJalaliDate(value))}
+                containerClassName="w-full"
+                inputClass="block w-full rounded-2xl border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+                placeholder="مثال: 1382/07/21"
+              />
+            </div>
           </label>
 
           <label className="block">
@@ -346,18 +349,26 @@ export function ProfileForm({
               <Users className="h-4 w-4 text-emerald-700" />
               شما در حال حاضر عضو کدام حلقه هستید؟
             </span>
-            <input
-              list="circle-options"
-              value={form.currentCircle}
-              onChange={(event) => updateField("currentCircle", event.target.value)}
-              placeholder={circles.length > 0 ? "نام حلقه را جستجو یا انتخاب کنید" : "نام حلقه را وارد کنید"}
-              className="w-full rounded-2xl border border-zinc-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-            />
-            <datalist id="circle-options">
-              {circles.map((circleName) => (
-                <option key={circleName} value={circleName} />
-              ))}
-            </datalist>
+            <div className="relative">
+              <select
+                value={form.currentCircle}
+                onChange={(event) => updateField("currentCircle", event.target.value)}
+                className="w-full appearance-none rounded-2xl border border-zinc-300 bg-white py-2.5 pr-3 pl-10 text-sm outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
+              >
+                <option value="" disabled>
+                  {circles.length > 0 ? "حلقه خود را انتخاب کنید" : "حلقه‌ای ثبت نشده است"}
+                </option>
+                {form.currentCircle && !circles.includes(form.currentCircle) ? (
+                  <option value={form.currentCircle}>{form.currentCircle}</option>
+                ) : null}
+                {circles.map((circleName) => (
+                  <option key={circleName} value={circleName}>
+                    {circleName}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            </div>
           </label>
 
           <label className="block md:col-span-2">
