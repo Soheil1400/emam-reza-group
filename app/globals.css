@@ -3,6 +3,7 @@
 :root {
   --background: #f7f8f7;
   --foreground: #111827;
+  --surface-radius: 8px;
 }
 
 @theme inline {
@@ -27,4 +28,16 @@ button,
   background-image:
     radial-gradient(circle at 15% 20%, rgb(16 185 129 / 0.2), transparent 30%),
     radial-gradient(circle at 85% 0%, rgb(20 184 166 / 0.18), transparent 35%);
+}
+
+/* Keep box and table corners visually consistent across the project. */
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl {
+  border-radius: var(--surface-radius);
+}
+
+table {
+  border-radius: var(--surface-radius);
 }

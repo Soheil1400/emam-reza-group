@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 
@@ -163,16 +164,19 @@ export function BlogBuilderForm({ initialData }: { initialData: InitialData }) {
             <div className="grid gap-4">
               <label className="block">
                 <span className="mb-1 block text-sm font-medium">نوع سکشن</span>
-                <select
-                  value={section.type}
-                  onChange={(event) =>
-                    updateSection(index, { type: event.target.value as SectionType })
-                  }
-                  className="w-full rounded-xl border border-zinc-300 px-3 py-2"
-                >
-                  <option value="TEXT">فقط متن</option>
-                  <option value="TEXT_IMAGE">متن + تصویر</option>
-                </select>
+                <div className="relative">
+                  <select
+                    value={section.type}
+                    onChange={(event) =>
+                      updateSection(index, { type: event.target.value as SectionType })
+                    }
+                    className="w-full appearance-none rounded-xl border border-zinc-300 py-2 pr-3 pl-10"
+                  >
+                    <option value="TEXT">فقط متن</option>
+                    <option value="TEXT_IMAGE">متن + تصویر</option>
+                  </select>
+                  <ChevronDown className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+                </div>
               </label>
               <label className="block">
                 <span className="mb-1 block text-sm font-medium">عنوان سکشن</span>
