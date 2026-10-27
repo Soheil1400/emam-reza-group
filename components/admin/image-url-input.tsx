@@ -8,6 +8,9 @@ type UploadResponse = {
   message?: string;
 };
 
+const MAX_UPLOAD_SIZE_BYTES = 4 * 1024 * 1024;
+const FILE_SIZE_ERROR_MESSAGE = "حداکثر حجم فایل ۴ مگابایت است";
+
 export function ImageUrlInput({
   value,
   onChange,
@@ -25,6 +28,10 @@ export function ImageUrlInput({
 
   async function onPickFile(file: File | null) {
     if (!file) return;
+    if (file.size > MAX_UPLOAD_SIZE_BYTES) {
+      setError(FILE_SIZE_ERROR_MESSAGE);
+      return;
+    }
     setUploading(true);
     setError("");
 
@@ -39,10 +46,17 @@ export function ImageUrlInput({
       method: "POST",
       body: formData,
     });
-    const data = (await response.json()) as UploadResponse;
+    const data =
+      response.headers.get("content-type")?.includes("application/json")
+        ? ((await response.json()) as UploadResponse)
+        : ({} as UploadResponse);
     setUploading(false);
 
     if (!response.ok || !data.url) {
+      if (response.status === 413) {
+        setError(FILE_SIZE_ERROR_MESSAGE);
+        return;
+      }
       setError(data.message ?? "آپلود تصویر ناموفق بود");
       return;
     }

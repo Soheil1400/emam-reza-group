@@ -67,6 +67,9 @@ const provinceOptions = [
   "هرمزگان",
 ];
 
+const MAX_UPLOAD_SIZE_BYTES = 4 * 1024 * 1024;
+const FILE_SIZE_ERROR_MESSAGE = "حداکثر حجم فایل ۴ مگابایت است";
+
 function persianToLatinDigits(value: string) {
   return value
     .replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString())
@@ -145,6 +148,11 @@ export function ProfileForm({ initialData }: { initialData: Partial<ProfileData>
 
   async function uploadImage(file: File | null, key: "personnelPhotoUrl" | "idCardPhotoUrl") {
     if (!file) return;
+    if (file.size > MAX_UPLOAD_SIZE_BYTES) {
+      setSnackbar({ show: true, message: FILE_SIZE_ERROR_MESSAGE, kind: "error" });
+      setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
+      return;
+    }
     setUploadingKey(key);
     const formData = new FormData();
     formData.append("file", file);
@@ -152,10 +160,17 @@ export function ProfileForm({ initialData }: { initialData: Partial<ProfileData>
       method: "POST",
       body: formData,
     });
-    const data = (await response.json()) as { url?: string; message?: string };
+    const data = response.headers.get("content-type")?.includes("application/json")
+      ? ((await response.json()) as { url?: string; message?: string })
+      : ({} as { url?: string; message?: string });
     setUploadingKey(null);
 
     if (!response.ok || !data.url) {
+      if (response.status === 413) {
+        setSnackbar({ show: true, message: FILE_SIZE_ERROR_MESSAGE, kind: "error" });
+        setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
+        return;
+      }
       setSnackbar({ show: true, message: data.message ?? "آپلود تصویر ناموفق بود", kind: "error" });
       setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
       return;

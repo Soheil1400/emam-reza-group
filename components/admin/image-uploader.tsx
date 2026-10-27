@@ -14,6 +14,9 @@ type AssetHistory = {
   createdAt: string;
 };
 
+const MAX_UPLOAD_SIZE_BYTES = 4 * 1024 * 1024;
+const FILE_SIZE_ERROR_MESSAGE = "حداکثر حجم فایل ۴ مگابایت است";
+
 export function ImageUploader({ initialHistory }: { initialHistory: AssetHistory[] }) {
   const [file, setFile] = useState<File | null>(null);
   const [displayName, setDisplayName] = useState("");
@@ -59,6 +62,10 @@ export function ImageUploader({ initialHistory }: { initialHistory: AssetHistory
       showMessage("error", "نام تصویر را وارد کنید");
       return;
     }
+    if (file.size > MAX_UPLOAD_SIZE_BYTES) {
+      showMessage("error", FILE_SIZE_ERROR_MESSAGE);
+      return;
+    }
 
     setLoading(true);
     const formData = new FormData();
@@ -69,17 +76,32 @@ export function ImageUploader({ initialHistory }: { initialHistory: AssetHistory
       method: "POST",
       body: formData,
     });
-    const data = (await response.json()) as {
-      url?: string;
-      message?: string;
-      id?: string;
-      displayName?: string;
-      fileName?: string;
-      createdAt?: string;
-    };
+    const data =
+      response.headers.get("content-type")?.includes("application/json")
+        ? ((await response.json()) as {
+            url?: string;
+            message?: string;
+            id?: string;
+            displayName?: string;
+            fileName?: string;
+            createdAt?: string;
+          })
+        : ({} as {
+            url?: string;
+            message?: string;
+            id?: string;
+            displayName?: string;
+            fileName?: string;
+            createdAt?: string;
+          });
     setLoading(false);
 
     if (!response.ok) {
+      if (response.status === 413) {
+        showMessage("error", FILE_SIZE_ERROR_MESSAGE);
+        return;
+      }
+
       showMessage("error", data.message ?? "آپلود ناموفق بود");
       return;
     }
@@ -159,7 +181,15 @@ export function ImageUploader({ initialHistory }: { initialHistory: AssetHistory
       <input
         type="file"
         accept="image/*"
-        onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+        onChange={(event) => {
+          const nextFile = event.target.files?.[0] ?? null;
+          if (nextFile && nextFile.size > MAX_UPLOAD_SIZE_BYTES) {
+            setFile(null);
+            showMessage("error", FILE_SIZE_ERROR_MESSAGE);
+            return;
+          }
+          setFile(nextFile);
+        }}
         className="w-full rounded-xl border border-zinc-300 p-2"
       />
 
