@@ -39,10 +39,10 @@ export function PushNotificationSetup() {
 
         if (Notification.permission === "denied") return;
 
-        let permission = Notification.permission;
-        if (permission === "default") {
-          permission = await Notification.requestPermission();
-        }
+        const permission: NotificationPermission =
+          Notification.permission === "default"
+            ? await Notification.requestPermission()
+            : Notification.permission;
         if (permission !== "granted") return;
 
         const existing = await registration.pushManager.getSubscription();
