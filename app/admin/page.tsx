@@ -6,17 +6,18 @@ import { formatFaNumber } from "@/lib/persian";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const [usersCount, blogsCount, publishedBlogsCount, eventsCount] = await Promise.all([
+  const [usersCount, blogsCount, publishedBlogsCount, eventsCount, galleriesCount] = await Promise.all([
     db.user.count(),
     db.blogPost.count(),
     db.blogPost.count({ where: { isPublished: true } }),
     db.event.count(),
+    db.gallery.count(),
   ]);
 
   return (
     <section className="space-y-6">
       <h2 className="text-2xl font-bold text-zinc-900">داشبورد</h2>
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-5">
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <p className="text-sm text-zinc-500">کل کاربران</p>
           <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(usersCount)}</p>
@@ -33,6 +34,10 @@ export default async function AdminDashboardPage() {
           <p className="text-sm text-zinc-500">کل رویدادها</p>
           <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(eventsCount)}</p>
         </div>
+        <div className="rounded-2xl bg-white p-5 shadow-sm">
+          <p className="text-sm text-zinc-500">کل گالری‌ها</p>
+          <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(galleriesCount)}</p>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-3">
@@ -47,6 +52,9 @@ export default async function AdminDashboardPage() {
         </Link>
         <Link href="/admin/events" className="rounded-xl border border-zinc-300 px-4 py-2 text-sm font-medium">
           مدیریت رویدادها
+        </Link>
+        <Link href="/admin/galleries" className="rounded-xl border border-zinc-300 px-4 py-2 text-sm font-medium">
+          مدیریت گالری
         </Link>
         <Link href="/admin/uploads" className="rounded-xl border border-zinc-300 px-4 py-2 text-sm font-medium">
           آپلود تصویر

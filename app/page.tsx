@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendarDays, UserRound } from "lucide-react";
 
-import { HeroSlider, TravelCardsSlider } from "@/components/landing/landing-sliders";
+import { GallerySectionSliders, HeroSlider } from "@/components/landing/landing-sliders";
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
@@ -14,16 +14,53 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function Home() {
-  const blogs = await db.blogPost.findMany({
-    where: { isPublished: true },
-    orderBy: { publishedAt: "desc" },
-    take: 3,
-    include: {
-      author: {
-        select: { firstName: true, lastName: true },
-      },
-    },
-  });
+  let blogs: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string | null;
+    createdAt: Date;
+    publishedAt: Date | null;
+    author: { firstName: string; lastName: string } | null;
+  }> = [];
+  let galleries: Array<{
+    id: string;
+    title: string;
+    images: Array<{ id: string; imageUrl: string }>;
+  }> = [];
+
+  try {
+    [blogs, galleries] = await Promise.all([
+      db.blogPost.findMany({
+        where: { isPublished: true },
+        orderBy: { publishedAt: "desc" },
+        take: 3,
+        include: {
+          author: {
+            select: { firstName: true, lastName: true },
+          },
+        },
+      }),
+      db.gallery.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 3,
+        include: {
+          images: {
+            orderBy: { sortOrder: "asc" },
+            select: { id: true, imageUrl: true },
+          },
+        },
+      }),
+    ]);
+  } catch (error) {
+    console.error("Home page data fetch failed:", error);
+  }
+
+  const dedupedDynamicGalleries = galleries
+    .filter((gallery) => gallery.images.length > 0)
+    .filter((gallery) => gallery.title.trim() !== "مشهد ۱۴۰۴")
+    .filter((gallery, index, array) => array.findIndex((item) => item.title === gallery.title) === index)
+    .slice(0, 1);
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-16 px-4 py-10">
@@ -49,8 +86,14 @@ export default async function Home() {
             />
           </div>
         </section>
-
-        <TravelCardsSlider />
+        <section>
+          <div className="mb-4 flex items-center justify-end">
+            <Link href="/galleries" className="text-sm font-semibold text-emerald-800 hover:underline">
+              مشاهده همه
+            </Link>
+          </div>
+          <GallerySectionSliders galleries={dedupedDynamicGalleries} />
+        </section>
 
         <section className="rounded-3xl bg-white p-6 shadow-md">
           <div className="mb-4 flex items-center justify-between">

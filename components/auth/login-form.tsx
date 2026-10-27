@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { FormEvent, useState } from "react";
 
 import { Snackbar } from "@/components/ui/snackbar";
@@ -11,6 +12,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   const router = useRouter();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState<{
@@ -28,7 +30,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
       redirect: false,
       identifier,
       password,
-      callbackUrl,
+      callbackUrl: "/",
     });
 
     setLoading(false);
@@ -41,7 +43,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
     }
 
     setSnackbar({ show: true, message: "ورود موفق بود", kind: "success" });
-    router.push(result?.url ?? callbackUrl);
+    router.push(result?.url ?? "/");
     router.refresh();
   }
 
@@ -56,24 +58,38 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل یا شماره همراه</span>
-            <input
-              type="text"
-              required
-              value={identifier}
-              onChange={(event) => setIdentifier(event.target.value)}
-              className="w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-emerald-600 focus:ring"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                required
+                value={identifier}
+                onChange={(event) => setIdentifier(event.target.value)}
+                className="w-full rounded-xl border border-zinc-300 py-2 pr-10 pl-3 outline-none ring-emerald-600 focus:ring"
+              />
+              <Mail className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            </div>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-zinc-700">رمز عبور</span>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              className="w-full rounded-xl border border-zinc-300 px-3 py-2 outline-none ring-emerald-600 focus:ring"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                minLength={8}
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                className="w-full rounded-xl border border-zinc-300 py-2 pr-10 pl-10 outline-none ring-emerald-600 focus:ring"
+              />
+              <Lock className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 left-2 inline-flex items-center text-zinc-500 transition hover:text-zinc-700"
+                aria-label={showPassword ? "پنهان کردن رمز عبور" : "نمایش رمز عبور"}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </label>
 
           {error ? <p className="text-sm text-red-600">{error}</p> : null}

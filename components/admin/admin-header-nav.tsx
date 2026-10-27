@@ -12,6 +12,7 @@ const adminLinks = [
   { href: "/admin/users", label: "مدیریت کاربران" },
   { href: "/admin/groups", label: "مدیریت حلقه‌ها" },
   { href: "/admin/events", label: "مدیریت رویدادها" },
+  { href: "/admin/galleries", label: "مدیریت گالری" },
   { href: "/admin/uploads", label: "آپلود تصویر" },
 ];
 

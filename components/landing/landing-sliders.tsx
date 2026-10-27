@@ -4,6 +4,7 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "swiper/css/pagination";
 
+import Link from "next/link";
 import { Autoplay, EffectCards, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -66,7 +67,6 @@ export function HeroSlider() {
 export function TravelCardsSlider() {
   return (
     <div>
-      <h3 className="mb-6 text-center text-2xl font-bold text-emerald-950">گالری</h3>
       <Swiper effect="cards" grabCursor modules={[EffectCards]} className="h-80 w-80 max-w-full">
         {travelSlides.map((slide) => (
           <SwiperSlide key={slide.title}>
@@ -78,6 +78,48 @@ export function TravelCardsSlider() {
         ))}
       </Swiper>
       <p className="mt-4 text-center text-base font-semibold text-zinc-700">مشهد ۱۴۰۴</p>
+    </div>
+  );
+}
+
+type GalleryWithImages = {
+  id: string;
+  title: string;
+  images: Array<{ id: string; imageUrl: string }>;
+};
+
+function GalleryCardsSlider({ gallery }: { gallery: GalleryWithImages }) {
+  return (
+    <div>
+      <Swiper effect="cards" grabCursor modules={[EffectCards]} className="h-80 w-80 max-w-full">
+        {gallery.images.map((image) => (
+          <SwiperSlide key={image.id}>
+            <div className="h-full overflow-hidden rounded-3xl border border-emerald-700/20 bg-white shadow-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={image.imageUrl} alt={gallery.title} className="h-full w-full object-cover" />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <Link
+        href={`/galleries/${gallery.id}`}
+        className="mt-4 block text-center text-base font-semibold text-zinc-700 transition hover:text-emerald-700"
+      >
+        {gallery.title}
+      </Link>
+    </div>
+  );
+}
+
+export function GallerySectionSliders({ galleries }: { galleries: GalleryWithImages[] }) {
+  return (
+    <div>
+      <div className="grid gap-8 sm:grid-cols-2">
+        <TravelCardsSlider />
+        {galleries.map((gallery) => (
+          <GalleryCardsSlider key={gallery.id} gallery={gallery} />
+        ))}
+      </div>
     </div>
   );
 }

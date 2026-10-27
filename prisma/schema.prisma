@@ -26,6 +26,18 @@ enum UserGroup {
   B
 }
 
+enum EducationStage {
+  STUDENT
+  UNIVERSITY_STUDENT
+  EMPLOYED
+}
+
+enum DiscoverSource {
+  FAMILY
+  ENVIRONMENTAL_ADS
+  DIRECT_INVITE
+}
+
 enum SectionType {
   TEXT
   TEXT_IMAGE
@@ -44,6 +56,21 @@ model User {
   role         Role      @default(USER)
   group        UserGroup @default(UNASSIGNED)
   groupId      String?
+  nationalCode String?   @db.VarChar(10)
+  educationStage EducationStage?
+  fatherName   String?
+  birthDateJalali String?
+  birthProvince String?
+  currentCircle String?
+  personnelPhotoUrl String?
+  idCardPhotoUrl String?
+  discoverSource DiscoverSource?
+  mobile       String?
+  motherMobile String?
+  fatherMobile String?
+  homePhone    String?
+  fatherJob    String?
+  homeAddress  String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   blogPosts    BlogPost[]
@@ -98,6 +125,26 @@ model MediaAsset {
   mimeType  String
   data      String
   createdAt DateTime @default(now())
+}
+
+model Gallery {
+  id           String         @id @default(cuid())
+  title        String
+  coverImageUrl String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  images       GalleryImage[]
+}
+
+model GalleryImage {
+  id        String   @id @default(cuid())
+  galleryId String
+  imageUrl  String
+  sortOrder Int
+  createdAt DateTime @default(now())
+  gallery   Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+
+  @@index([galleryId, sortOrder])
 }
 
 model Comment {

@@ -1,11 +1,17 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { createHash } from "crypto";
 
 import { db } from "@/lib/db";
 import { normalizeIdentifier } from "@/lib/identity";
 
+const derivedFallbackSecret = createHash("sha256")
+  .update(process.env.DATABASE_URL ?? "emam-reza-group-auth")
+  .digest("hex");
+
 export const authOptions: NextAuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET ?? process.env.AUTH_SECRET ?? derivedFallbackSecret,
   session: {
     strategy: "jwt",
   },

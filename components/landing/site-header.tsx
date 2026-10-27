@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarDays, LogIn, Menu, Mosque, X } from "lucide-react";
+import { CalendarDays, LogIn, Menu, Mosque, UserCircle2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { LogoutButton } from "@/components/admin/logout-button";
@@ -65,8 +65,21 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
               <CalendarDays className="h-4 w-4" />
               رویدادها
             </Link>
+            <Link
+              href="/galleries"
+              className="rounded-xl border border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50"
+            >
+              گالری
+            </Link>
             {session ? (
               <>
+                <Link
+                  href="/profile"
+                  className="inline-flex items-center gap-1 rounded-xl border border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50"
+                >
+                  <UserCircle2 className="h-4 w-4" />
+                  پروفایل
+                </Link>
                 {(session.role === "ADMIN" ||
                   session.role === "SUB_ADMIN" ||
                   session.role === "COMMANDER" ||
@@ -146,8 +159,19 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                 <CalendarDays className="h-4 w-4" />
                 رویدادها
               </Link>
+              <Link href="/galleries" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+                گالری
+              </Link>
               {session ? (
                 <>
+                  <Link
+                    href="/profile"
+                    onClick={closeMenu}
+                    className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-4 py-2 text-sm"
+                  >
+                    <UserCircle2 className="h-4 w-4" />
+                    پروفایل
+                  </Link>
                   {(session.role === "ADMIN" ||
                     session.role === "SUB_ADMIN" ||
                     session.role === "COMMANDER" ||

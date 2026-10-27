@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ChevronDown, Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import { FormEvent, useState } from "react";
 
 import { Snackbar } from "@/components/ui/snackbar";
@@ -15,6 +16,7 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [gender, setGender] = useState<Gender>("MALE");
+  const [showPassword, setShowPassword] = useState(false);
   const [snackbar, setSnackbar] = useState<{
     show: boolean;
     message: string;
@@ -33,9 +35,6 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
     const payload = {
       firstName: formData.get("firstName"),
       lastName: formData.get("lastName"),
-      age: formData.get("age"),
-      address: formData.get("address"),
-      education: formData.get("education"),
       gender,
       identifier,
       password,
@@ -60,20 +59,20 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
       redirect: false,
       identifier,
       password,
-      callbackUrl,
+      callbackUrl: "/profile",
     });
     setLoading(false);
 
     if (signInResult?.error) {
       setMessage("ثبت‌نام انجام شد، لطفا وارد شوید.");
       setSnackbar({ show: true, message: "ثبت‌نام انجام شد؛ حالا وارد شوید", kind: "info" });
-      setTimeout(() => router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`), 1000);
+      setTimeout(() => router.push("/login"), 1000);
       return;
     }
 
     setMessage("ثبت‌نام و ورود با موفقیت انجام شد.");
     setSnackbar({ show: true, message: "ثبت‌نام با موفقیت انجام شد", kind: "success" });
-    router.push(signInResult?.url ?? callbackUrl);
+    router.push(signInResult?.url ?? "/profile");
     router.refresh();
   }
 
@@ -88,53 +87,64 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
         <form onSubmit={onSubmit} className="mt-6 grid gap-4 md:grid-cols-2">
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-zinc-700">نام</span>
-            <input name="firstName" required className="w-full rounded-xl border border-zinc-300 px-3 py-2" />
+            <div className="relative">
+              <input name="firstName" required className="w-full rounded-xl border border-zinc-300 py-2 pr-10 pl-3" />
+              <User className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            </div>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-zinc-700">نام خانوادگی</span>
-            <input name="lastName" required className="w-full rounded-xl border border-zinc-300 px-3 py-2" />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">سن</span>
-            <input name="age" type="number" min={10} max={100} required className="w-full rounded-xl border border-zinc-300 px-3 py-2" />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">تحصیلات</span>
-            <input name="education" required className="w-full rounded-xl border border-zinc-300 px-3 py-2" />
-          </label>
-          <label className="block md:col-span-2">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">آدرس</span>
-            <input name="address" required className="w-full rounded-xl border border-zinc-300 px-3 py-2" />
+            <div className="relative">
+              <input name="lastName" required className="w-full rounded-xl border border-zinc-300 py-2 pr-10 pl-3" />
+              <User className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            </div>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-zinc-700">جنسیت</span>
-            <select
-              value={gender}
-              onChange={(event) => setGender(event.target.value as Gender)}
-              className="w-full rounded-xl border border-zinc-300 px-3 py-2"
-            >
-              <option value="MALE">آقا</option>
-              <option value="FEMALE">خانم</option>
-            </select>
+            <div className="relative">
+              <select
+                value={gender}
+                onChange={(event) => setGender(event.target.value as Gender)}
+                className="w-full appearance-none rounded-xl border border-zinc-300 py-2 pr-3 pl-10"
+              >
+                <option value="MALE">آقا</option>
+                <option value="FEMALE">خانم</option>
+              </select>
+              <ChevronDown className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            </div>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل یا شماره همراه</span>
-            <input
-              name="identifier"
-              type="text"
-              required
-              className="w-full rounded-xl border border-zinc-300 px-3 py-2"
-            />
+            <div className="relative">
+              <input
+                name="identifier"
+                type="text"
+                required
+                className="w-full rounded-xl border border-zinc-300 py-2 pr-10 pl-3"
+              />
+              <Mail className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+            </div>
           </label>
           <label className="block md:col-span-2">
             <span className="mb-1 block text-sm font-medium text-zinc-700">رمز عبور (حداقل ۸ کاراکتر)</span>
-            <input
-              name="password"
-              type="password"
-              minLength={8}
-              required
-              className="w-full rounded-xl border border-zinc-300 px-3 py-2"
-            />
+            <div className="relative">
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                minLength={8}
+                required
+                className="w-full rounded-xl border border-zinc-300 py-2 pr-10 pl-10"
+              />
+              <Lock className="pointer-events-none absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-zinc-500" />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 left-2 inline-flex items-center text-zinc-500 transition hover:text-zinc-700"
+                aria-label={showPassword ? "پنهان کردن رمز عبور" : "نمایش رمز عبور"}
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
           </label>
 
           <div className="md:col-span-2">

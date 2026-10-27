@@ -4,9 +4,9 @@ import { isValidIdentifier, normalizeIdentifier } from "@/lib/identity";
 export const registerSchema = z.object({
   firstName: z.string().trim().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
   lastName: z.string().trim().min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد"),
-  age: z.coerce.number().int().min(10, "سن نامعتبر است").max(100, "سن نامعتبر است"),
-  address: z.string().trim().min(5, "آدرس باید کامل‌تر باشد"),
-  education: z.string().trim().min(2, "تحصیلات را وارد کنید"),
+  age: z.coerce.number().int().min(10, "سن نامعتبر است").max(100, "سن نامعتبر است").default(18),
+  address: z.string().trim().min(5, "آدرس باید کامل‌تر باشد").default("تکمیل نشده"),
+  education: z.string().trim().min(2, "تحصیلات را وارد کنید").default("تکمیل نشده"),
   gender: z.enum(["MALE", "FEMALE"]),
   identifier: z
     .string()
@@ -83,6 +83,43 @@ export const eventUpdateSchema = eventSchema.partial().refine(
   "حداقل یک فیلد برای بروزرسانی لازم است",
 );
 
+export const gallerySchema = z.object({
+  title: z.string().trim().min(2, "عنوان گالری کوتاه است"),
+  coverImageUrl: z.string().url("لینک کاور نامعتبر است"),
+  images: z
+    .array(z.string().url("لینک عکس نامعتبر است"))
+    .min(1, "حداقل یک عکس برای گالری لازم است"),
+});
+
+export const galleryUpdateSchema = gallerySchema.partial().extend({
+  images: z.array(z.string().url("لینک عکس نامعتبر است")).optional(),
+}).refine((value) => Object.keys(value).length > 0, "حداقل یک فیلد برای بروزرسانی لازم است");
+
+export const profileSchema = z.object({
+  firstName: z.string().trim().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
+  lastName: z.string().trim().min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد"),
+  nationalCode: z.string().regex(/^\d{10}$/, "کد ملی باید ۱۰ رقم باشد"),
+  educationStage: z.enum(["STUDENT", "UNIVERSITY_STUDENT", "EMPLOYED"]),
+  fatherName: z.string().trim().min(2, "نام پدر الزامی است"),
+  birthDateJalali: z
+    .string()
+    .trim()
+    .regex(/^1[34]\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])$/, "تاریخ تولد شمسی نامعتبر است"),
+  birthProvince: z.string().trim().min(2, "استان محل تولد را وارد کنید"),
+  currentCircle: z.string().trim().min(2, "نام حلقه فعلی را وارد کنید"),
+  personnelPhotoUrl: z.string().url("آدرس عکس پرسنلی نامعتبر است"),
+  idCardPhotoUrl: z.string().url("آدرس عکس شناسنامه نامعتبر است"),
+  discoverSource: z.enum(["FAMILY", "ENVIRONMENTAL_ADS", "DIRECT_INVITE"]),
+  mobile: z.string().regex(/^09\d{9}$/, "شماره موبایل نامعتبر است"),
+  motherMobile: z.string().regex(/^09\d{9}$/, "شماره همراه مادر نامعتبر است"),
+  fatherMobile: z.string().regex(/^09\d{9}$/, "شماره همراه پدر نامعتبر است"),
+  homePhone: z.string().regex(/^0\d{10}$/, "شماره تلفن منزل نامعتبر است"),
+  fatherJob: z.string().trim().min(2, "شغل پدر را وارد کنید"),
+  homeAddress: z.string().trim().min(10, "آدرس منزل باید کامل‌تر باشد"),
+});
+
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type BlogInput = z.infer<typeof blogSchema>;
 export type EventInput = z.infer<typeof eventSchema>;
+export type GalleryInput = z.infer<typeof gallerySchema>;
+export type ProfileInput = z.infer<typeof profileSchema>;
