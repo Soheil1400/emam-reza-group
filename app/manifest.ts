@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "گروه فرهنگی امام رضا(ع)",
-    short_name: "امام رضا(ع)",
+    name: "گروه فرهنگی امام رضا (ع)",
+    short_name: "گروه فرهنگی امام رضا (ع)",
     description: "سایت رسمی گروه فرهنگی امام رضا(ع) شامل روایت‌ها، رویدادها و حلقه‌ها",
     start_url: "/",
     display: "standalone",
