@@ -25,55 +25,64 @@ export function RegisterForm({ callbackUrl }: { callbackUrl: string }) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true);
-    setError("");
-    setMessage("");
+    try {
+      setLoading(true);
+      setError("");
+      setMessage("");
 
-    const formData = new FormData(event.currentTarget);
-    const identifier = String(formData.get("identifier") ?? "");
-    const password = String(formData.get("password") ?? "");
-    const payload = {
-      firstName: formData.get("firstName"),
-      lastName: formData.get("lastName"),
-      gender,
-      identifier,
-      password,
-    };
+      const formData = new FormData(event.currentTarget);
+      const identifier = String(formData.get("identifier") ?? "");
+      const password = String(formData.get("password") ?? "");
+      const payload = {
+        firstName: formData.get("firstName"),
+        lastName: formData.get("lastName"),
+        gender,
+        identifier,
+        password,
+      };
 
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    const data = (await response.json()) as { message?: string };
-    if (!response.ok) {
-      setLoading(false);
-      setError(data.message ?? "ثبت نام ناموفق بود");
-      setSnackbar({ show: true, message: data.message ?? "ثبت نام ناموفق بود", kind: "error" });
+      const data = (await response.json()) as { message?: string };
+      if (!response.ok) {
+        setError(data.message ?? "ثبت نام ناموفق بود");
+        setSnackbar({ show: true, message: data.message ?? "ثبت نام ناموفق بود", kind: "error" });
+        setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
+        return;
+      }
+
+      const signInResult = await signIn("credentials", {
+        redirect: false,
+        identifier,
+        password,
+        callbackUrl: "/profile",
+      });
+
+      if (signInResult?.error || !signInResult?.ok) {
+        setMessage("ثبت‌نام انجام شد، لطفا وارد شوید.");
+        setSnackbar({ show: true, message: "ثبت‌نام انجام شد؛ حالا وارد شوید", kind: "info" });
+        setTimeout(() => {
+          router.replace("/login");
+          router.refresh();
+        }, 1000);
+        return;
+      }
+
+      setMessage("ثبت‌نام و ورود با موفقیت انجام شد.");
+      setSnackbar({ show: true, message: "ثبت‌نام با موفقیت انجام شد", kind: "success" });
+      router.replace("/profile");
+      router.refresh();
+    } catch {
+      setError("در حال حاضر ثبت نام ممکن نیست. لطفا دوباره تلاش کنید.");
+      setSnackbar({ show: true, message: "در حال حاضر ثبت نام ممکن نیست", kind: "error" });
       setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    const signInResult = await signIn("credentials", {
-      redirect: false,
-      identifier,
-      password,
-      callbackUrl: "/profile",
-    });
-    setLoading(false);
-
-    if (signInResult?.error) {
-      setMessage("ثبت‌نام انجام شد، لطفا وارد شوید.");
-      setSnackbar({ show: true, message: "ثبت‌نام انجام شد؛ حالا وارد شوید", kind: "info" });
-      setTimeout(() => router.push("/login"), 1000);
-      return;
-    }
-
-    setMessage("ثبت‌نام و ورود با موفقیت انجام شد.");
-    setSnackbar({ show: true, message: "ثبت‌نام با موفقیت انجام شد", kind: "success" });
-    router.push(signInResult?.url ?? "/profile");
-    router.refresh();
   }
 
   const loginHref = `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`;

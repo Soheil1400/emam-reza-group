@@ -23,27 +23,34 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true);
-    setError("");
+    try {
+      setLoading(true);
+      setError("");
 
-    const result = await signIn("credentials", {
-      redirect: false,
-      identifier,
-      password,
-      callbackUrl: "/",
-    });
+      const result = await signIn("credentials", {
+        redirect: false,
+        identifier,
+        password,
+        callbackUrl: "/",
+      });
 
-    setLoading(false);
+      if (result?.error || !result?.ok) {
+        setError("ایمیل/شماره همراه یا رمز عبور اشتباه است.");
+        setSnackbar({ show: true, message: "ایمیل/شماره همراه یا رمز عبور اشتباه است", kind: "error" });
+        setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
+        return;
+      }
 
-    if (result?.error) {
-      setError("ایمیل/شماره همراه یا رمز عبور اشتباه است.");
-      setSnackbar({ show: true, message: "ایمیل/شماره همراه یا رمز عبور اشتباه است", kind: "error" });
+      setSnackbar({ show: true, message: "ورود موفق بود", kind: "success" });
+      router.replace("/");
+      router.refresh();
+    } catch {
+      setError("در حال حاضر ورود ممکن نیست. لطفا دوباره تلاش کنید.");
+      setSnackbar({ show: true, message: "در حال حاضر ورود ممکن نیست", kind: "error" });
       setTimeout(() => setSnackbar({ show: false, message: "", kind: "info" }), 2500);
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    setSnackbar({ show: true, message: "ورود موفق بود", kind: "success" });
-    router.replace("/");
   }
 
   const registerHref = `/register?callbackUrl=${encodeURIComponent(callbackUrl)}`;
