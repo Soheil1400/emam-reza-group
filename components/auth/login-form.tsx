@@ -43,8 +43,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
     }
 
     setSnackbar({ show: true, message: "ورود موفق بود", kind: "success" });
-    router.push(result?.url ?? "/");
-    router.refresh();
+    router.replace("/");
   }
 
   const registerHref = `/register?callbackUrl=${encodeURIComponent(callbackUrl)}`;

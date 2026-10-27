@@ -56,6 +56,20 @@ export function NavigationProgress() {
   }, [complete, routeKey]);
 
   useEffect(() => {
+    const shouldStartByUrl = (urlLike: string | URL | null | undefined) => {
+      if (!urlLike) return false;
+      let nextUrl: URL;
+      try {
+        nextUrl = new URL(String(urlLike), window.location.href);
+      } catch {
+        return false;
+      }
+      if (nextUrl.origin !== window.location.origin) return false;
+      const nextKey = `${nextUrl.pathname}${nextUrl.search}`;
+      const currentKey = `${window.location.pathname}${window.location.search}`;
+      return nextKey !== currentKey;
+    };
+
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -88,11 +102,15 @@ export function NavigationProgress() {
     const originalReplaceState = window.history.replaceState;
 
     window.history.pushState = function pushState(...args) {
-      start();
+      if (shouldStartByUrl(args[2])) {
+        start();
+      }
       return originalPushState.apply(this, args);
     };
     window.history.replaceState = function replaceState(...args) {
-      start();
+      if (shouldStartByUrl(args[2])) {
+        start();
+      }
       return originalReplaceState.apply(this, args);
     };
 
