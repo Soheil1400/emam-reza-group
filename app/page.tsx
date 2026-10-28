@@ -14,6 +14,13 @@ export const metadata: Metadata = buildPageMetadata({
   canonicalPath: "/",
 });
 
+function formatFaDate(dateValue: Date | string | null | undefined) {
+  if (!dateValue) return "تاریخ نامشخص";
+  const parsedDate = dateValue instanceof Date ? dateValue : new Date(dateValue);
+  if (Number.isNaN(parsedDate.getTime())) return "تاریخ نامشخص";
+  return new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" }).format(parsedDate);
+}
+
 const getCachedHomeData = unstable_cache(
   async () => {
     const [blogs, galleries, heroSlides] = await Promise.all([
@@ -253,9 +260,7 @@ export default async function Home() {
                     </p>
                     <p className="inline-flex items-center gap-1">
                       <CalendarDays className="h-3.5 w-3.5" />
-                      {new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" }).format(
-                        blog.publishedAt ?? blog.createdAt,
-                      )}
+                      {formatFaDate(blog.publishedAt ?? blog.createdAt)}
                     </p>
                   </div>
                 </Link>
