@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { GalleryLightbox } from "@/components/galleries/gallery-lightbox";
 import { db } from "@/lib/db";
 import { DEFAULT_DESCRIPTION, SITE_NAME } from "@/lib/seo";
 
@@ -64,14 +65,13 @@ export default async function GalleryDetailsPage({
       <h1 className="text-3xl font-black text-emerald-900">{gallery.title}</h1>
       <p className="mt-2 text-zinc-600">همه تصاویر این گالری</p>
 
-      <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {gallery.images.map((image) => (
-          <figure key={image.id} className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image.imageUrl} alt={gallery.title} className="h-56 w-full object-cover" />
-          </figure>
-        ))}
-      </section>
+      <GalleryLightbox
+        images={gallery.images.map((image) => ({
+          id: image.id,
+          imageUrl: image.imageUrl,
+        }))}
+        title={gallery.title}
+      />
 
       {gallery.images.length === 0 ? (
         <p className="mt-8 rounded-2xl bg-white p-6 text-zinc-600 shadow-sm">این گالری عکسی ندارد.</p>

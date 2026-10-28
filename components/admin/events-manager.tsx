@@ -83,6 +83,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [attendanceEvent, setAttendanceEvent] = useState<EventItem | null>(null);
   const [pendingAttendanceUserId, setPendingAttendanceUserId] = useState<string | null>(null);
+  const [attendanceFilter, setAttendanceFilter] = useState<"ALL" | "PRESENT" | "ABSENT" | "UNKNOWN">("ALL");
   const [snackbar, setSnackbar] = useState<{
     show: boolean;
     message: string;
@@ -275,6 +276,12 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
     router.refresh();
   }
 
+  const filteredParticipants =
+    attendanceEvent?.participants.filter((participant) => {
+      if (attendanceFilter === "ALL") return true;
+      return participant.attendanceStatus === attendanceFilter;
+    }) ?? [];
+
   return (
     <section className="space-y-6">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
@@ -317,7 +324,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
             />
           </div>
         </div>
-        <ImageUrlPreview url={imageUrl} alt={title || "رویداد"} />
+        <ImageUrlPreview url={imageUrl} alt={title || "رویداد"} className="h-24 w-full max-w-sm" />
         <textarea
           value={description}
           onChange={(event) => setDescription(event.target.value)}
@@ -363,7 +370,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
                   </p>
                 ) : null}
                 <p className="mt-1 text-xs text-zinc-500">لینک تصویر: {event.imageUrl}</p>
-                <ImageUrlPreview url={event.imageUrl} alt={event.title} className="h-24 w-36" />
+                <ImageUrlPreview url={event.imageUrl} alt={event.title} className="h-20 w-full max-w-[220px]" />
                 <p className="mt-1 text-xs text-zinc-500">
                   وضعیت ثبت‌نام: {event.isRegistrationOpen ? "فعال" : "غیرفعال"}
                 </p>
@@ -375,7 +382,10 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
               <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
-                  onClick={() => setAttendanceEvent(event)}
+                  onClick={() => {
+                    setAttendanceEvent(event);
+                    setAttendanceFilter("ALL");
+                  }}
                   className="inline-flex items-center gap-2 rounded-lg border border-indigo-600 px-3 py-1.5 text-sm text-indigo-700"
                 >
                   <ClipboardCheck className="h-4 w-4" />
@@ -418,29 +428,6 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
               </div>
             </div>
 
-            <div className="mt-4 rounded-xl border border-zinc-200 p-3">
-              <p className="mb-2 inline-flex items-center gap-2 text-sm font-medium text-zinc-800">
-                <Users className="h-4 w-4" />
-                افراد شرکت‌کننده ({formatFaNumber(event.participants.length)})
-              </p>
-              {event.participants.length > 0 ? (
-                <ul className="space-y-2">
-                  {event.participants.map((participant) => (
-                    <li key={participant.id} className="flex flex-wrap items-center gap-2 text-sm">
-                      <span>{`${participant.firstName} ${participant.lastName}`}</span>
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800">
-                        {participant.groupName ? `حلقه ${participant.groupName}` : "حلقه بدون انتساب"}
-                      </span>
-                      <span className={`rounded-full px-2 py-0.5 text-xs ${attendanceBadgeClass(participant.attendanceStatus)}`}>
-                        {attendanceLabel(participant.attendanceStatus)}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-zinc-500">فعلا کسی شرکت نکرده است.</p>
-              )}
-            </div>
           </article>
         ))}
       </div>
@@ -464,11 +451,60 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
                 بستن
               </button>
             </div>
+            <div className="mb-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setAttendanceFilter("ALL")}
+                className={`rounded-lg border px-3 py-1.5 text-sm ${
+                  attendanceFilter === "ALL"
+                    ? "border-emerald-700 bg-emerald-50 text-emerald-800"
+                    : "border-zinc-300 text-zinc-700"
+                }`}
+              >
+                همه
+              </button>
+              <button
+                type="button"
+                onClick={() => setAttendanceFilter("PRESENT")}
+                className={`rounded-lg border px-3 py-1.5 text-sm ${
+                  attendanceFilter === "PRESENT"
+                    ? "border-emerald-700 bg-emerald-50 text-emerald-800"
+                    : "border-zinc-300 text-zinc-700"
+                }`}
+              >
+                حاضر
+              </button>
+              <button
+                type="button"
+                onClick={() => setAttendanceFilter("ABSENT")}
+                className={`rounded-lg border px-3 py-1.5 text-sm ${
+                  attendanceFilter === "ABSENT"
+                    ? "border-rose-700 bg-rose-50 text-rose-800"
+                    : "border-zinc-300 text-zinc-700"
+                }`}
+              >
+                غایب
+              </button>
+              <button
+                type="button"
+                onClick={() => setAttendanceFilter("UNKNOWN")}
+                className={`rounded-lg border px-3 py-1.5 text-sm ${
+                  attendanceFilter === "UNKNOWN"
+                    ? "border-zinc-700 bg-zinc-100 text-zinc-800"
+                    : "border-zinc-300 text-zinc-700"
+                }`}
+              >
+                ثبت‌نشده
+              </button>
+            </div>
             {attendanceEvent.participants.length === 0 ? (
               <p className="rounded-xl bg-zinc-50 p-4 text-sm text-zinc-600">فعلا شرکت‌کننده‌ای ثبت نشده است.</p>
             ) : (
               <div className="max-h-[62vh] space-y-2 overflow-y-auto rounded-xl border border-zinc-200 p-3">
-                {attendanceEvent.participants.map((participant) => (
+                {filteredParticipants.length === 0 ? (
+                  <p className="rounded-lg bg-zinc-50 p-3 text-sm text-zinc-600">موردی با این فیلتر پیدا نشد.</p>
+                ) : null}
+                {filteredParticipants.map((participant) => (
                   <div
                     key={participant.id}
                     className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-zinc-200 bg-zinc-50 p-3"

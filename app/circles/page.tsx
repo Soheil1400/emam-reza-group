@@ -19,9 +19,9 @@ export default async function CirclesPage() {
       <h1 className="text-3xl font-black text-emerald-900">معرفی حلقه‌ها</h1>
       <p className="mt-2 text-zinc-600">اطلاعات حلقه‌های فرهنگی و فعالیت‌های آن‌ها</p>
 
-      <section className="mt-8 space-y-6">
+      <section className="mt-8 grid gap-6 md:grid-cols-2">
         {circles.length === 0 ? (
-          <p className="rounded-2xl bg-white p-5 text-zinc-600 shadow-sm">حلقه‌ای ثبت نشده است.</p>
+          <p className="rounded-2xl bg-white p-5 text-zinc-600 shadow-sm md:col-span-2">حلقه‌ای ثبت نشده است.</p>
         ) : null}
 
         {circles.map((circle) => (

@@ -31,7 +31,7 @@ export function ImageUrlPreview({
       <img
         src={normalized}
         alt={alt ?? "پیش نمایش تصویر"}
-        className={`${className} rounded-lg object-cover`}
+        className={`${className} max-w-full rounded-lg object-cover`}
         onError={() => setFailed(true)}
       />
     </div>
