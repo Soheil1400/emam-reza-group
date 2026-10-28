@@ -16,7 +16,8 @@ export async function GET(
     status: 200,
     headers: {
       "Content-Type": asset.mimeType,
-      "Cache-Control": "public, max-age=31536000, immutable",
+      // Cache aggressively at the CDN layer to avoid repeated DB reads for media assets.
+      "Cache-Control": "public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=86400, immutable",
     },
   });
 }

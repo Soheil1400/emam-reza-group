@@ -14,6 +14,9 @@ function buildPrismaDatabaseUrl() {
 
   try {
     const url = new URL(databaseUrl);
+    if (!url.searchParams.has("pgbouncer")) {
+      url.searchParams.set("pgbouncer", "true");
+    }
     if (!url.searchParams.has("connection_limit")) {
       url.searchParams.set("connection_limit", "1");
     }
