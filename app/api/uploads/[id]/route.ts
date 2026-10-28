@@ -1,5 +1,7 @@
 import { db } from "@/lib/db";
 
+export const revalidate = 31536000;
+
 export async function GET(
   _request: Request,
   context: { params: Promise<{ id: string }> },
