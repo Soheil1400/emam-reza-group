@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 type HeaderSession = {
   name?: string | null;
-  role: "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "ADMIN";
+  role: "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "EVENT_MANAGER" | "ADMIN";
 } | null;
 
 export function SiteHeader({ session }: { session: HeaderSession }) {
@@ -70,7 +70,8 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                 {(session.role === "ADMIN" ||
                   session.role === "SUB_ADMIN" ||
                   session.role === "COMMANDER" ||
-                  session.role === "CIRCLE_LEAD") && (
+                  session.role === "CIRCLE_LEAD" ||
+                  session.role === "EVENT_MANAGER") && (
                   <Link
                     href="/admin"
                     className="rounded-xl border border-emerald-700 px-4 py-2 text-sm font-medium text-emerald-800 transition hover:bg-emerald-50"
@@ -161,7 +162,8 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                   {(session.role === "ADMIN" ||
                     session.role === "SUB_ADMIN" ||
                     session.role === "COMMANDER" ||
-                    session.role === "CIRCLE_LEAD") && (
+                    session.role === "CIRCLE_LEAD" ||
+                    session.role === "EVENT_MANAGER") && (
                     <Link href="/admin" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
                       پنل ادمین
                     </Link>
