@@ -8,7 +8,7 @@ import { authOptions } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { DEFAULT_DESCRIPTION, SITE_NAME } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

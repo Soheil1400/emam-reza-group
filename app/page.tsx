@@ -6,7 +6,7 @@ import { GallerySectionSliders, HeroSlider } from "@/components/landing/landing-
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 export const metadata: Metadata = buildPageMetadata({
   title: "صفحه اصلی",
   description: "معرفی گروه فرهنگی امام رضا(ع)، گالری تصاویر و جدیدترین روایت‌ها.",

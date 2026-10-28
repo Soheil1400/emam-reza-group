@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { getServerSession } from "next-auth";
 
 import { EventsCards } from "@/components/events/events-cards";
@@ -13,17 +14,24 @@ export const metadata: Metadata = buildPageMetadata({
   canonicalPath: "/events",
 });
 
+const getCachedEvents = unstable_cache(
+  async () =>
+    db.event.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: {
+          select: { participants: true },
+        },
+      },
+    }),
+  ["public-events-list"],
+  { revalidate: 60 },
+);
+
 export default async function EventsPage() {
   const session = await getServerSession(authOptions);
 
-  const events = await db.event.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      _count: {
-        select: { participants: true },
-      },
-    },
-  });
+  const events = await getCachedEvents();
 
   const joinedEventIds = session?.user?.id
     ? (

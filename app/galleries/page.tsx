@@ -4,7 +4,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 export const metadata: Metadata = buildPageMetadata({
   title: "گالری‌ها",
   description: "گالری تصاویر گروه فرهنگی امام رضا(ع) همراه با کاور و عنوان هر گالری.",

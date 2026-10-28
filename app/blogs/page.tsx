@@ -5,7 +5,7 @@ import { CalendarDays, UserRound } from "lucide-react";
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 export const metadata: Metadata = buildPageMetadata({
   title: "همه روایت‌ها",
   description: "فهرست کامل روایت‌های منتشرشده گروه فرهنگی امام رضا(ع).",
