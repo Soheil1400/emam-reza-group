@@ -31,7 +31,7 @@ type UserRow = {
   education: string;
   gender: "MALE" | "FEMALE";
   email: string;
-  role: "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "ADMIN";
+  role: "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "EVENT_MANAGER" | "ADMIN";
   group: "UNASSIGNED" | "A" | "B";
   groupId: string | null;
 };
@@ -156,6 +156,7 @@ export function UsersManager({
                         <option value="USER">کاربر</option>
                         <option value="COMMANDER">فرمانده</option>
                         <option value="CIRCLE_LEAD">سرحلقه</option>
+                        <option value="EVENT_MANAGER">مسئول رویداد</option>
                         <option value="ADMIN">ادمین اصلی</option>
                       </select>
                       <ChevronDown className="pointer-events-none absolute top-1/2 left-2 h-4 w-4 -translate-y-1/2 text-zinc-500" />

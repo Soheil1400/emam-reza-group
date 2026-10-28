@@ -6,18 +6,26 @@ import { useState } from "react";
 
 import { LogoutButton } from "@/components/admin/logout-button";
 
+type AdminRole = "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "EVENT_MANAGER" | "ADMIN";
+
 const adminLinks = [
   { href: "/admin", label: "داشبورد" },
-  { href: "/admin/blogs", label: "مدیریت روایت" },
-  { href: "/admin/users", label: "مدیریت کاربران" },
-  { href: "/admin/groups", label: "مدیریت حلقه‌ها" },
-  { href: "/admin/events", label: "مدیریت رویدادها" },
-  { href: "/admin/galleries", label: "مدیریت گالری" },
-  { href: "/admin/uploads", label: "آپلود تصویر" },
+  { href: "/admin/blogs", label: "مدیریت روایت", roles: ["ADMIN", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD"] },
+  { href: "/admin/users", label: "مدیریت کاربران", roles: ["ADMIN"] },
+  { href: "/admin/groups", label: "مدیریت حلقه‌ها", roles: ["ADMIN", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD"] },
+  {
+    href: "/admin/events",
+    label: "مدیریت رویدادها",
+    roles: ["ADMIN", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD", "EVENT_MANAGER"],
+  },
+  { href: "/admin/galleries", label: "مدیریت گالری", roles: ["ADMIN", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD"] },
+  { href: "/admin/uploads", label: "آپلود تصویر", roles: ["ADMIN", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD"] },
+  { href: "/admin/banners", label: "مدیریت بنرها", roles: ["ADMIN", "SUB_ADMIN", "COMMANDER"] },
 ];
 
-export function AdminHeaderNav({ email }: { email: string }) {
+export function AdminHeaderNav({ email, role }: { email: string; role: AdminRole }) {
   const [open, setOpen] = useState(false);
+  const visibleLinks = adminLinks.filter((link) => !link.roles || link.roles.includes(role));
 
   return (
     <header className="border-b border-zinc-200 bg-white">
@@ -37,7 +45,7 @@ export function AdminHeaderNav({ email }: { email: string }) {
         </button>
 
         <div className="hidden flex-wrap gap-2 md:flex">
-          {adminLinks.map((item) => (
+          {visibleLinks.map((item) => (
             <Link key={item.href} href={item.href} className="rounded-lg border border-zinc-300 px-3 py-2 text-sm">
               {item.label}
             </Link>
@@ -67,7 +75,7 @@ export function AdminHeaderNav({ email }: { email: string }) {
               </button>
             </div>
             <div className="flex flex-col gap-2">
-              {adminLinks.map((item) => (
+              {visibleLinks.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}

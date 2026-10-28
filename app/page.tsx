@@ -28,9 +28,10 @@ export default async function Home() {
     title: string;
     images: Array<{ id: string; imageUrl: string }>;
   }> = [];
+  let heroSlides: Array<{ title: string; imageUrl: string }> = [];
 
   try {
-    [blogs, galleries] = await Promise.all([
+    [blogs, galleries, heroSlides] = await Promise.all([
       db.blogPost.findMany({
         where: { isPublished: true },
         orderBy: { publishedAt: "desc" },
@@ -49,6 +50,14 @@ export default async function Home() {
             orderBy: { sortOrder: "asc" },
             select: { id: true, imageUrl: true },
           },
+        },
+      }),
+      db.homeBanner.findMany({
+        where: { isActive: true },
+        orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+        select: {
+          title: true,
+          imageUrl: true,
         },
       }),
     ]);
@@ -86,7 +95,7 @@ export default async function Home() {
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-16 px-4 py-10">
-        <HeroSlider />
+        <HeroSlider slides={heroSlides} />
 
         <h1 className="text-3xl font-black leading-tight text-emerald-700 md:text-4xl">
           معرفی گروه فرهنگی امام رضا(ع)

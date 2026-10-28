@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { CheckCircle2, LogIn, UserMinus, UserPlus } from "lucide-react";
+import { CheckCircle2, LogIn, UserMinus, UserPlus, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -15,6 +15,7 @@ type EventCard = {
   location: string | null;
   eventTime: string | null;
   isRegistrationOpen: boolean;
+  participantsCount: number;
 };
 
 export function EventsCards({
@@ -79,6 +80,10 @@ export function EventsCards({
                     زمان: {new Date(event.eventTime).toLocaleString("fa-IR")}
                   </p>
                 ) : null}
+                <p className="mt-1 inline-flex items-center gap-1 text-xs text-zinc-600">
+                  <Users className="h-3.5 w-3.5" />
+                  تعداد شرکت‌کننده‌ها: {new Intl.NumberFormat("fa-IR").format(event.participantsCount)}
+                </p>
 
                 <div className="mt-4">
                   {isLoggedIn ? (

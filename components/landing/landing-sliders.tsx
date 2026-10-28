@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Autoplay, EffectCards, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const heroSlides = [
+const defaultHeroSlides = [
   {
     title: "بنر ۱",
     imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3hdl00000il04mmb8s0lj",
@@ -22,6 +22,11 @@ const heroSlides = [
     imageUrl: "https://masjid-portal-site.vercel.app/api/uploads/cmue3gdj70000js0468dz3zdy",
   },
 ];
+
+type HeroSlide = {
+  title: string;
+  imageUrl: string;
+};
 
 const travelSlides = [
   {
@@ -42,7 +47,9 @@ const travelSlides = [
   },
 ];
 
-export function HeroSlider() {
+export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
+  const heroSlides = slides.length > 0 ? slides : defaultHeroSlides;
+
   return (
     <Swiper
       modules={[Autoplay, Pagination]}

@@ -18,6 +18,11 @@ export default async function EventsPage() {
 
   const events = await db.event.findMany({
     orderBy: { createdAt: "desc" },
+    include: {
+      _count: {
+        select: { participants: true },
+      },
+    },
   });
 
   const joinedEventIds = session?.user?.id
@@ -46,6 +51,7 @@ export default async function EventsPage() {
           location: event.location,
           eventTime: event.eventTime ? event.eventTime.toISOString() : null,
           isRegistrationOpen: event.isRegistrationOpen,
+          participantsCount: event._count.participants,
         }))}
         joinedEventIds={joinedEventIds}
         isLoggedIn={Boolean(session?.user)}

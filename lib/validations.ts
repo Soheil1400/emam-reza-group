@@ -95,6 +95,18 @@ export const galleryUpdateSchema = gallerySchema.partial().extend({
   images: z.array(z.string().url("لینک عکس نامعتبر است")).optional(),
 }).refine((value) => Object.keys(value).length > 0, "حداقل یک فیلد برای بروزرسانی لازم است");
 
+export const homeBannerSchema = z.object({
+  title: z.string().trim().min(2, "عنوان بنر کوتاه است"),
+  imageUrl: z.string().url("لینک تصویر بنر نامعتبر است"),
+  sortOrder: z.coerce.number().int().min(0, "ترتیب نمایش نامعتبر است").default(0),
+  isActive: z.boolean().default(true),
+});
+
+export const homeBannerUpdateSchema = homeBannerSchema.partial().refine(
+  (value) => Object.keys(value).length > 0,
+  "حداقل یک فیلد برای بروزرسانی لازم است",
+);
+
 export const profileSchema = z.object({
   firstName: z.string().trim().min(2, "نام باید حداقل ۲ کاراکتر باشد"),
   lastName: z.string().trim().min(2, "نام خانوادگی باید حداقل ۲ کاراکتر باشد"),
@@ -122,4 +134,5 @@ export type RegisterInput = z.infer<typeof registerSchema>;
 export type BlogInput = z.infer<typeof blogSchema>;
 export type EventInput = z.infer<typeof eventSchema>;
 export type GalleryInput = z.infer<typeof gallerySchema>;
+export type HomeBannerInput = z.infer<typeof homeBannerSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;

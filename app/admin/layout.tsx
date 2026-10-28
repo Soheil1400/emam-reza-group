@@ -28,7 +28,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="min-h-screen bg-zinc-100">
-      <AdminHeaderNav email={session.user.email ?? ""} />
+      <AdminHeaderNav email={session.user.email ?? ""} role={session.user.role} />
       <main className="mx-auto w-full max-w-6xl px-4 py-8">{children}</main>
     </div>
   );

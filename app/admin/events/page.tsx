@@ -41,6 +41,7 @@ export default async function AdminEventsPage() {
             firstName: item.user.firstName,
             lastName: item.user.lastName,
             groupName: item.user.managedGroup?.name ?? null,
+            attendanceStatus: item.attendanceStatus,
           })),
         }))}
       />

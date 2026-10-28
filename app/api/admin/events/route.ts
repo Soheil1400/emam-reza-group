@@ -12,7 +12,8 @@ async function ensureAdmin() {
     session?.user.role === "ADMIN" ||
     session?.user.role === "SUB_ADMIN" ||
     session?.user.role === "COMMANDER" ||
-    session?.user.role === "CIRCLE_LEAD"
+    session?.user.role === "CIRCLE_LEAD" ||
+    session?.user.role === "EVENT_MANAGER"
   );
 }
 

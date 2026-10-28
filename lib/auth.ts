@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         const role = (
-          user as { role?: "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "ADMIN" }
+          user as { role?: "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "EVENT_MANAGER" | "ADMIN" }
         ).role;
         const group = (user as { group?: "UNASSIGNED" | "A" | "B" }).group;
 
@@ -76,7 +76,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.sub ?? "";
         session.user.role =
-          (token.role as "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "ADMIN") ??
+          (token.role as "USER" | "SUB_ADMIN" | "COMMANDER" | "CIRCLE_LEAD" | "EVENT_MANAGER" | "ADMIN") ??
           "USER";
         session.user.group = (token.group as "UNASSIGNED" | "A" | "B") ?? "UNASSIGNED";
       }

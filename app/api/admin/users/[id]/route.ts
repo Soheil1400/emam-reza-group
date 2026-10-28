@@ -8,7 +8,7 @@ import { db } from "@/lib/db";
 const updateUserSchema = z.object({
   group: z.enum(["UNASSIGNED", "A", "B"]).optional(),
   groupId: z.string().nullable().optional(),
-  role: z.enum(["USER", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD", "ADMIN"]).optional(),
+  role: z.enum(["USER", "SUB_ADMIN", "COMMANDER", "CIRCLE_LEAD", "EVENT_MANAGER", "ADMIN"]).optional(),
 });
 
 async function ensureAdmin() {

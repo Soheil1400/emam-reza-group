@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 import { authOptions } from "@/lib/auth";
+import { canAccessAdminPanel } from "@/lib/admin-permissions";
 
 export async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -10,12 +11,7 @@ export async function requireAdmin() {
     redirect("/login");
   }
 
-  if (
-    session.user.role !== "ADMIN" &&
-    session.user.role !== "SUB_ADMIN" &&
-    session.user.role !== "COMMANDER" &&
-    session.user.role !== "CIRCLE_LEAD"
-  ) {
+  if (!canAccessAdminPanel(session.user.role)) {
     redirect("/");
   }
 

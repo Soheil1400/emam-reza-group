@@ -12,6 +12,7 @@ enum Role {
   SUB_ADMIN
   COMMANDER
   CIRCLE_LEAD
+  EVENT_MANAGER
   ADMIN
 }
 
@@ -41,6 +42,12 @@ enum DiscoverSource {
 enum SectionType {
   TEXT
   TEXT_IMAGE
+}
+
+enum AttendanceStatus {
+  UNKNOWN
+  PRESENT
+  ABSENT
 }
 
 model User {
@@ -178,6 +185,8 @@ model EventParticipation {
   id        String   @id @default(cuid())
   eventId   String
   userId    String
+  attendanceStatus AttendanceStatus @default(UNKNOWN)
+  attendanceMarkedAt DateTime?
   createdAt DateTime @default(now())
   event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -195,4 +204,14 @@ model PushSubscription {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model HomeBanner {
+  id        String   @id @default(cuid())
+  title     String
+  imageUrl  String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
