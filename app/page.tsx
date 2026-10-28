@@ -118,7 +118,7 @@ export default async function Home() {
     <div className="mx-auto w-full max-w-6xl space-y-16 px-4 py-10">
         <HeroSlider slides={heroSlides} />
 
-        <h1 className="text-3xl font-black leading-tight text-emerald-700 md:text-4xl">
+        <h1 className="text-2xl font-black leading-tight text-emerald-700 md:text-4xl">
           معرفی گروه فرهنگی امام رضا(ع)
         </h1>
 
@@ -178,8 +178,8 @@ export default async function Home() {
             <div className="order-2 md:order-1">
               <h2 className="text-2xl font-black leading-tight text-emerald-900 md:text-3xl">ورزشی</h2>
               <ul className="mt-4 list-disc space-y-2 pr-5 text-base leading-8 text-zinc-700 marker:text-emerald-700">
-                <li>برگزاری کلاس های ورزشی نظیر جودو زورخانه و ...</li>
-                <li>سانس های هفتگی فوتبال فوتسال والیبال استخر</li>
+                <li>برگزاری کلاس های ورزشی نظیر جودو، زورخانه و ...</li>
+                <li>سانس های هفتگی فوتبال، فوتسال، والیبال، استخر</li>
               </ul>
             </div>
             <div className="order-1 grid grid-cols-3 gap-3 md:order-2">
