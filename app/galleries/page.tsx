@@ -1,23 +1,31 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = buildPageMetadata({
   title: "گالری‌ها",
   description: "گالری تصاویر گروه فرهنگی امام رضا(ع) همراه با کاور و عنوان هر گالری.",
   canonicalPath: "/galleries",
 });
 
+const getCachedGalleries = unstable_cache(
+  async () =>
+    db.gallery.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: { select: { images: true } },
+      },
+    }),
+  ["public-galleries-list"],
+  { revalidate: 300 },
+);
+
 export default async function GalleriesPage() {
-  const galleries = await db.gallery.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      _count: { select: { images: true } },
-    },
-  });
+  const galleries = await getCachedGalleries();
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10">

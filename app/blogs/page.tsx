@@ -1,27 +1,35 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { CalendarDays, UserRound } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = buildPageMetadata({
   title: "همه روایت‌ها",
   description: "فهرست کامل روایت‌های منتشرشده گروه فرهنگی امام رضا(ع).",
   canonicalPath: "/blogs",
 });
 
-export default async function BlogsPage() {
-  const blogs = await db.blogPost.findMany({
-    where: { isPublished: true },
-    orderBy: { publishedAt: "desc" },
-    include: {
-      author: {
-        select: { firstName: true, lastName: true },
+const getCachedBlogs = unstable_cache(
+  async () =>
+    db.blogPost.findMany({
+      where: { isPublished: true },
+      orderBy: { publishedAt: "desc" },
+      include: {
+        author: {
+          select: { firstName: true, lastName: true },
+        },
       },
-    },
-  });
+    }),
+  ["public-blogs-list"],
+  { revalidate: 300 },
+);
+
+export default async function BlogsPage() {
+  const blogs = await getCachedBlogs();
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10">

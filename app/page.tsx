@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { CalendarDays, UserRound } from "lucide-react";
 
@@ -6,32 +7,16 @@ import { GallerySectionSliders, HeroSlider } from "@/components/landing/landing-
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = buildPageMetadata({
   title: "صفحه اصلی",
   description: "معرفی گروه فرهنگی امام رضا(ع)، گالری تصاویر و جدیدترین روایت‌ها.",
   canonicalPath: "/",
 });
 
-export default async function Home() {
-  let blogs: Array<{
-    id: string;
-    title: string;
-    slug: string;
-    excerpt: string | null;
-    createdAt: Date;
-    publishedAt: Date | null;
-    author: { firstName: string; lastName: string } | null;
-  }> = [];
-  let galleries: Array<{
-    id: string;
-    title: string;
-    images: Array<{ id: string; imageUrl: string }>;
-  }> = [];
-  let heroSlides: Array<{ title: string; imageUrl: string }> = [];
-
-  try {
-    [blogs, galleries, heroSlides] = await Promise.all([
+const getCachedHomeData = unstable_cache(
+  async () => {
+    const [blogs, galleries, heroSlides] = await Promise.all([
       db.blogPost.findMany({
         where: { isPublished: true },
         orderBy: { publishedAt: "desc" },
@@ -61,6 +46,35 @@ export default async function Home() {
         },
       }),
     ]);
+
+    return { blogs, galleries, heroSlides };
+  },
+  ["home-page-data"],
+  { revalidate: 300 },
+);
+
+export default async function Home() {
+  let blogs: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    excerpt: string | null;
+    createdAt: Date;
+    publishedAt: Date | null;
+    author: { firstName: string; lastName: string } | null;
+  }> = [];
+  let galleries: Array<{
+    id: string;
+    title: string;
+    images: Array<{ id: string; imageUrl: string }>;
+  }> = [];
+  let heroSlides: Array<{ title: string; imageUrl: string }> = [];
+
+  try {
+    const homeData = await getCachedHomeData();
+    blogs = homeData.blogs;
+    galleries = homeData.galleries;
+    heroSlides = homeData.heroSlides;
   } catch (error) {
     console.error("Home page data fetch failed:", error);
   }

@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import { db } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = buildPageMetadata({
   title: "معرفی حلقه‌ها",
   description: "معرفی حلقه‌های فرهنگی، آواتار، توضیح و تصاویر فعالیت‌ها.",
   canonicalPath: "/circles",
 });
 
+const getCachedCircles = unstable_cache(
+  async () =>
+    db.group.findMany({
+      orderBy: { createdAt: "desc" },
+    }),
+  ["public-circles-list"],
+  { revalidate: 300 },
+);
+
 export default async function CirclesPage() {
-  const circles = await db.group.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  const circles = await getCachedCircles();
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10">

@@ -4,7 +4,7 @@ export const revalidate = 31536000;
 
 type CachedMedia = {
   mimeType: string;
-  buffer: Buffer;
+  body: ArrayBuffer;
   cachedAt: number;
 };
 
@@ -27,7 +27,7 @@ export async function GET(
   const cached = mediaAssetCache.get(id);
 
   if (cached && now - cached.cachedAt < MEDIA_CACHE_TTL_MS) {
-    return new Response(cached.buffer, {
+    return new Response(cached.body, {
       status: 200,
       headers: {
         "Content-Type": cached.mimeType,
@@ -42,10 +42,11 @@ export async function GET(
     return new Response("Not found", { status: 404 });
   }
 
-  const buffer = Buffer.from(asset.data, "base64");
+  const bytes = Uint8Array.from(Buffer.from(asset.data, "base64"));
+  const body = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
   mediaAssetCache.set(id, {
     mimeType: asset.mimeType,
-    buffer,
+    body,
     cachedAt: now,
   });
 
@@ -56,7 +57,7 @@ export async function GET(
     }
   }
 
-  return new Response(buffer, {
+  return new Response(body, {
     status: 200,
     headers: {
       "Content-Type": asset.mimeType,
