@@ -19,7 +19,7 @@ export function GalleryLightbox({
 
   return (
     <>
-      <section className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="mt-5 grid gap-3 sm:grid-cols-2 md:mt-8 md:gap-4 lg:grid-cols-4">
         {images.map((image) => (
           <button
             key={image.id}

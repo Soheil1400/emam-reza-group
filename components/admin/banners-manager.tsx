@@ -97,7 +97,7 @@ export function BannersManager({ initialBanners }: { initialBanners: BannerItem[
   return (
     <section className="space-y-6">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <h2 className="text-xl font-bold">{editingId ? "ویرایش بنر" : "افزودن بنر جدید"}</h2>
+        <h2 className="text-base font-bold md:text-xl">{editingId ? "ویرایش بنر" : "افزودن بنر جدید"}</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           <input
             value={title}
@@ -155,7 +155,7 @@ export function BannersManager({ initialBanners }: { initialBanners: BannerItem[
           <article key={banner.id} className="rounded-2xl bg-white p-4 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="space-y-1">
-                <h3 className="text-lg font-semibold text-zinc-900">{banner.title}</h3>
+                <h3 className="text-sm font-semibold text-zinc-900 md:text-lg">{banner.title}</h3>
                 <p className="text-xs text-zinc-600">ترتیب نمایش: {banner.sortOrder}</p>
                 <p className={`text-xs font-medium ${banner.isActive ? "text-emerald-700" : "text-zinc-500"}`}>
                   وضعیت: {banner.isActive ? "فعال" : "غیرفعال"}

@@ -20,7 +20,7 @@ export default async function AdminGroupsPage() {
 
   return (
     <section className="space-y-4">
-      <h1 className="text-2xl font-bold">مدیریت حلقه‌ها</h1>
+      <h1 className="text-lg font-bold md:text-2xl">مدیریت حلقه‌ها</h1>
       <GroupsManager initialGroups={groups} />
     </section>
   );

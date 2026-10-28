@@ -47,7 +47,7 @@ export default async function AdminUsersPage() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-bold">مدیریت کاربران ثبت‌نام‌شده</h2>
+      <h2 className="text-lg font-bold md:text-2xl">مدیریت کاربران ثبت‌نام‌شده</h2>
       <UsersManager users={users} groups={groups} />
     </section>
   );

@@ -69,13 +69,13 @@ export default async function EventsPage() {
   }
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      <div className="rounded-3xl bg-emerald-900 px-6 py-8 text-white">
-        <h1 className="text-3xl font-black">رویدادهای فرهنگی</h1>
+    <main className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
+      <div className="rounded-3xl bg-emerald-900 px-4 py-5 text-white md:px-6 md:py-8">
+        <h1 className="text-xl font-black md:text-3xl">رویدادهای فرهنگی</h1>
       </div>
 
       {loadFailed ? (
-        <p className="mt-8 rounded-2xl bg-white p-6 text-zinc-600 shadow-sm">
+        <p className="mt-5 rounded-2xl bg-white p-4 text-xs text-zinc-600 shadow-sm md:mt-8 md:p-6 md:text-sm">
           بارگذاری رویدادها موقتاً ممکن نیست. لطفاً چند لحظه بعد صفحه را دوباره باز کنید.
         </p>
       ) : null}

@@ -84,12 +84,12 @@ export default async function BlogPostPage({
   }
 
   return (
-    <main className="mx-auto w-full max-w-4xl px-4 py-10">
-      <article className="space-y-8">
+    <main className="mx-auto w-full max-w-4xl px-4 py-6 md:py-10">
+      <article className="space-y-5 md:space-y-8">
         <header className="rounded-3xl bg-white p-6 shadow-sm">
-          <h1 className="text-3xl font-black text-emerald-900">{post.title}</h1>
-          {post.excerpt ? <p className="mt-3 leading-8 text-zinc-700">{post.excerpt}</p> : null}
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-zinc-600">
+          <h1 className="text-xl font-black text-emerald-900 md:text-3xl">{post.title}</h1>
+          {post.excerpt ? <p className="mt-3 text-sm leading-6 text-zinc-700 md:text-base md:leading-8">{post.excerpt}</p> : null}
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-zinc-600 md:text-sm">
             <div className="inline-flex items-center gap-2">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -124,8 +124,8 @@ export default async function BlogPostPage({
 
           return (
             <section key={section.id} className="rounded-3xl bg-white p-6 shadow-sm">
-              <h2 className="text-2xl font-bold text-zinc-900">{title}</h2>
-              <p className="mt-3 leading-8 text-zinc-700">{text}</p>
+              <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">{title}</h2>
+              <p className="mt-3 text-sm leading-6 text-zinc-700 md:text-base md:leading-8">{text}</p>
 
               {section.type === "TEXT_IMAGE" && imageUrl ? (
                 <div className="mt-5 overflow-hidden rounded-2xl bg-zinc-100 p-3">

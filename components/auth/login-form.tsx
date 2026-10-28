@@ -56,14 +56,14 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   const registerHref = `/register?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
   return (
-    <main className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-10">
+    <main className="mx-auto flex min-h-[80vh] w-full max-w-md items-center px-4 py-6 md:py-10">
       <div className="w-full rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-bold text-emerald-900">ورود</h1>
-        <p className="mt-2 text-sm text-zinc-600">برای دسترسی به حساب کاربری وارد شوید.</p>
+        <h1 className="text-lg font-bold text-emerald-900 md:text-2xl">ورود</h1>
+        <p className="mt-2 text-xs text-zinc-600 md:text-sm">برای دسترسی به حساب کاربری وارد شوید.</p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">ایمیل یا شماره همراه</span>
+            <span className="mb-1 block text-xs font-medium text-zinc-700 md:text-sm">ایمیل یا شماره همراه</span>
             <div className="relative">
               <input
                 type="text"
@@ -76,7 +76,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
             </div>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-medium text-zinc-700">رمز عبور</span>
+            <span className="mb-1 block text-xs font-medium text-zinc-700 md:text-sm">رمز عبور</span>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
@@ -98,18 +98,18 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
             </div>
           </label>
 
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {error ? <p className="text-xs text-red-600 md:text-sm">{error}</p> : null}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-emerald-700 px-4 py-2 font-medium text-white transition hover:bg-emerald-800 disabled:opacity-70"
+            className="w-full rounded-xl bg-emerald-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-800 disabled:opacity-70 md:text-base"
           >
             {loading ? "در حال ورود..." : "ورود"}
           </button>
         </form>
 
-        <p className="mt-4 text-sm text-zinc-600">
+        <p className="mt-4 text-xs text-zinc-600 md:text-sm">
           حساب ندارید؟{" "}
           <Link href={registerHref} className="font-semibold text-emerald-700">
             ثبت نام

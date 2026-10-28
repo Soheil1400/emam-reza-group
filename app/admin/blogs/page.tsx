@@ -47,7 +47,7 @@ export default async function AdminBlogsPage() {
   return (
     <section className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">مدیریت روایت</h2>
+        <h2 className="text-lg font-bold md:text-2xl">مدیریت روایت</h2>
         <Link href="/admin/blogs/new" className="rounded-xl bg-emerald-700 px-4 py-2 text-sm text-white">
           ایجاد روایت
         </Link>
@@ -58,7 +58,7 @@ export default async function AdminBlogsPage() {
           <article key={blog.id} className="rounded-2xl bg-white p-5 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h3 className="text-lg font-semibold">{blog.title}</h3>
+                <h3 className="text-sm font-semibold md:text-lg">{blog.title}</h3>
                 <p className="text-sm text-zinc-600">{blog.slug}</p>
                 <p className="mt-2 text-sm text-zinc-500">تعداد سکشن: {formatFaNumber(blog.sections.length)}</p>
                 <p className="mt-1 inline-flex items-center gap-1 text-xs text-zinc-500">

@@ -61,9 +61,9 @@ export default async function GalleryDetailsPage({
   }
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      <h1 className="text-3xl font-black text-emerald-900">{gallery.title}</h1>
-      <p className="mt-2 text-zinc-600">همه تصاویر این گالری</p>
+    <main className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
+      <h1 className="text-xl font-black text-emerald-900 md:text-3xl">{gallery.title}</h1>
+      <p className="mt-2 text-xs text-zinc-600 md:text-sm">همه تصاویر این گالری</p>
 
       <GalleryLightbox
         images={gallery.images.map((image) => ({
@@ -74,7 +74,7 @@ export default async function GalleryDetailsPage({
       />
 
       {gallery.images.length === 0 ? (
-        <p className="mt-8 rounded-2xl bg-white p-6 text-zinc-600 shadow-sm">این گالری عکسی ندارد.</p>
+        <p className="mt-5 rounded-2xl bg-white p-4 text-xs text-zinc-600 shadow-sm md:mt-8 md:p-6 md:text-sm">این گالری عکسی ندارد.</p>
       ) : null}
     </main>
   );

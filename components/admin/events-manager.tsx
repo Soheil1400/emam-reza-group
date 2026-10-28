@@ -285,7 +285,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
   return (
     <section className="space-y-6">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <h2 className="text-xl font-bold">{editingId ? "ویرایش رویداد" : "ایجاد رویداد جدید"}</h2>
+        <h2 className="text-base font-bold md:text-xl">{editingId ? "ویرایش رویداد" : "ایجاد رویداد جدید"}</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           <input
             value={title}
@@ -356,7 +356,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
           <article key={event.id} className="rounded-2xl bg-white p-5 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h3 className="text-lg font-bold text-zinc-900">{event.title}</h3>
+                <h3 className="text-sm font-bold text-zinc-900 md:text-lg">{event.title}</h3>
                 <p className="mt-2 text-sm text-zinc-700">{event.description}</p>
                 {event.location ? (
                   <p className="mt-1 inline-flex items-center gap-1 text-xs text-zinc-600">
@@ -442,7 +442,7 @@ export function EventsManager({ initialEvents }: { initialEvents: EventItem[] })
           />
           <div className="absolute top-1/2 left-1/2 w-[min(900px,95vw)] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white p-5 shadow-2xl">
             <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-lg font-bold text-zinc-900">حضور و غیاب: {attendanceEvent.title}</h3>
+              <h3 className="text-sm font-bold text-zinc-900 md:text-lg">حضور و غیاب: {attendanceEvent.title}</h3>
               <button
                 type="button"
                 onClick={() => setAttendanceEvent(null)}

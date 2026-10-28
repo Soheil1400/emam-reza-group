@@ -23,11 +23,11 @@ export default async function CirclesPage() {
   const circles = await getCachedCircles();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      <h1 className="text-3xl font-black text-emerald-900">معرفی حلقه‌ها</h1>
-      <p className="mt-2 text-zinc-600">اطلاعات حلقه‌های فرهنگی و فعالیت‌های آن‌ها</p>
+    <main className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
+      <h1 className="text-xl font-black text-emerald-900 md:text-3xl">معرفی حلقه‌ها</h1>
+      <p className="mt-2 text-xs text-zinc-600 md:text-sm">اطلاعات حلقه‌های فرهنگی و فعالیت‌های آن‌ها</p>
 
-      <section className="mt-8 grid gap-6 md:grid-cols-2">
+      <section className="mt-5 grid gap-4 md:mt-8 md:grid-cols-2 md:gap-6">
         {circles.length === 0 ? (
           <p className="rounded-2xl bg-white p-5 text-zinc-600 shadow-sm md:col-span-2">حلقه‌ای ثبت نشده است.</p>
         ) : null}
@@ -47,9 +47,9 @@ export default async function CirclesPage() {
                   {circle.name.slice(0, 1)}
                 </div>
               )}
-              <h2 className="text-2xl font-bold text-zinc-900">{circle.name}</h2>
+              <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">{circle.name}</h2>
             </div>
-            <p className="mt-4 leading-8 text-zinc-700">{circle.description || "توضیحی ثبت نشده است."}</p>
+            <p className="mt-4 text-sm leading-6 text-zinc-700 md:text-base md:leading-8">{circle.description || "توضیحی ثبت نشده است."}</p>
 
             {circle.imageUrl ? (
               <div className="mt-5 overflow-hidden rounded-2xl border border-zinc-200">

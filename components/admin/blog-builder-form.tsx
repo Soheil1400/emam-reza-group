@@ -107,7 +107,7 @@ export function BlogBuilderForm({ initialData }: { initialData: InitialData }) {
   return (
     <section className="space-y-5">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <h2 className="text-2xl font-bold">{isEditMode ? "ویرایش روایت" : "ایجاد روایت جدید"}</h2>
+        <h2 className="text-lg font-bold md:text-2xl">{isEditMode ? "ویرایش روایت" : "ایجاد روایت جدید"}</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <label className="block">
             <span className="mb-1 block text-sm font-medium">عنوان</span>

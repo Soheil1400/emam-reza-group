@@ -113,7 +113,7 @@ function LabeledInput({
 }) {
   return (
     <label className="block">
-      <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+      <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
         {icon}
         {label}
       </span>
@@ -238,12 +238,12 @@ export function ProfileForm({
   }
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <main className="mx-auto w-full max-w-5xl px-4 py-5 md:py-8">
       <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-emerald-900">پروفایل</h1>
-            <p className="mt-2 text-sm text-zinc-600">اطلاعات فردی خود را کامل و ذخیره کنید.</p>
+            <h1 className="text-lg font-bold text-emerald-900 md:text-2xl">پروفایل</h1>
+            <p className="mt-2 text-xs text-zinc-600 md:text-sm">اطلاعات فردی خود را کامل و ذخیره کنید.</p>
           </div>
           <LogoutButton className="inline-flex items-center gap-1 rounded-xl border border-rose-600 px-3 py-2 text-sm text-rose-600 transition hover:bg-rose-50" />
         </div>
@@ -273,7 +273,7 @@ export function ProfileForm({
           />
 
           <label className="block">
-            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <GraduationCap className="h-4 w-4 text-emerald-700" />
               مقطع تحصیلی
             </span>
@@ -304,7 +304,7 @@ export function ProfileForm({
           />
 
           <label className="block">
-            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <CalendarDays className="h-4 w-4 text-emerald-700" />
               تاریخ تولد (شمسی)
             </span>
@@ -324,7 +324,7 @@ export function ProfileForm({
           </label>
 
           <label className="block">
-            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <MapPinned className="h-4 w-4 text-emerald-700" />
               استان محل تولد
             </span>
@@ -345,7 +345,7 @@ export function ProfileForm({
           </label>
 
           <label className="block">
-            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <Users className="h-4 w-4 text-emerald-700" />
               شما در حال حاضر عضو کدام حلقه هستید؟
             </span>
@@ -372,7 +372,7 @@ export function ProfileForm({
           </label>
 
           <label className="block md:col-span-2">
-            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <Users className="h-4 w-4 text-emerald-700" />
               چگونه با گروه امام رضا (ع) آشنا شدید؟
             </span>
@@ -435,7 +435,7 @@ export function ProfileForm({
           />
 
           <label className="block md:col-span-2">
-            <span className="mb-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="mb-1.5 inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <Home className="h-4 w-4 text-emerald-700" />
               آدرس منزل
             </span>
@@ -448,7 +448,7 @@ export function ProfileForm({
           </label>
 
           <div className="space-y-2">
-            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <Camera className="h-4 w-4 text-emerald-700" />
               عکس پرسنلی
             </span>
@@ -480,7 +480,7 @@ export function ProfileForm({
           </div>
 
           <div className="space-y-2">
-            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-700">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-700 md:text-sm">
               <Camera className="h-4 w-4 text-emerald-700" />
               عکس شناسنامه
             </span>

@@ -118,7 +118,7 @@ export function GalleriesManager({ initialGalleries }: { initialGalleries: Galle
   return (
     <section className="space-y-6">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <h2 className="text-xl font-bold">{editingId ? "ویرایش گالری" : "ایجاد گالری جدید"}</h2>
+        <h2 className="text-base font-bold md:text-xl">{editingId ? "ویرایش گالری" : "ایجاد گالری جدید"}</h2>
         <div className="mt-4 space-y-3">
           <input
             value={title}
@@ -196,7 +196,7 @@ export function GalleriesManager({ initialGalleries }: { initialGalleries: Galle
           <article key={gallery.id} className="rounded-2xl bg-white p-5 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h3 className="text-lg font-bold text-zinc-900">{gallery.title}</h3>
+                <h3 className="text-sm font-bold text-zinc-900 md:text-lg">{gallery.title}</h3>
                 <p className="mt-1 text-xs text-zinc-500">تعداد عکس‌ها: {formatFaNumber(gallery.images.length)}</p>
                 <ImageUrlPreview url={gallery.coverImageUrl} alt={gallery.title} className="h-20 w-32" />
               </div>

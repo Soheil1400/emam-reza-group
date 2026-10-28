@@ -32,21 +32,21 @@ export default async function BlogsPage() {
   const blogs = await getCachedBlogs();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      <h1 className="text-3xl font-black text-emerald-900">همه روایت‌ها</h1>
-      <p className="mt-2 text-zinc-600">فهرست کامل روایت‌های منتشرشده حلقه فرهنگی.</p>
+    <main className="mx-auto w-full max-w-6xl px-4 py-6 md:py-10">
+      <h1 className="text-xl font-black text-emerald-900 md:text-3xl">همه روایت‌ها</h1>
+      <p className="mt-2 text-xs text-zinc-600 md:text-sm">فهرست کامل روایت‌های منتشرشده حلقه فرهنگی.</p>
 
-      <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <section className="mt-5 grid gap-3 md:mt-8 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
         {blogs.map((blog) => (
           <Link
             key={blog.id}
             href={`/blog/${blog.slug}`}
             className="rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:border-emerald-600 hover:shadow-md"
           >
-            <h2 className="text-xl font-semibold text-zinc-900">{blog.title}</h2>
-            <p className="mt-2 line-clamp-3 text-sm text-zinc-600">{blog.excerpt ?? "بدون خلاصه"}</p>
+            <h2 className="text-sm font-semibold text-zinc-900 md:text-xl">{blog.title}</h2>
+            <p className="mt-2 line-clamp-3 text-xs text-zinc-600 md:text-sm">{blog.excerpt ?? "بدون خلاصه"}</p>
 
-            <div className="mt-4 space-y-1 text-xs text-zinc-500">
+            <div className="mt-3 space-y-1 text-[11px] text-zinc-500 md:mt-4 md:text-xs">
               <p className="inline-flex items-center gap-1">
                 <UserRound className="h-3.5 w-3.5" />
                 {blog.author ? `${blog.author.firstName} ${blog.author.lastName}` : "ادمین سایت"}
@@ -63,7 +63,7 @@ export default async function BlogsPage() {
       </section>
 
       {blogs.length === 0 ? (
-        <p className="mt-8 rounded-2xl bg-white p-6 text-zinc-600 shadow-sm">هیچ روایتی منتشر نشده است.</p>
+        <p className="mt-5 rounded-2xl bg-white p-4 text-xs text-zinc-600 shadow-sm md:mt-8 md:p-6 md:text-sm">هیچ روایتی منتشر نشده است.</p>
       ) : null}
     </main>
   );

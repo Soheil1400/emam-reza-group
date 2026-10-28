@@ -103,7 +103,7 @@ export function GroupsManager({ initialGroups }: { initialGroups: GroupItem[] })
   return (
     <section className="space-y-5">
       <div className="rounded-2xl bg-white p-5 shadow-sm">
-        <h2 className="text-xl font-bold">{editingId ? "ویرایش حلقه" : "تعریف حلقه جدید"}</h2>
+        <h2 className="text-base font-bold md:text-xl">{editingId ? "ویرایش حلقه" : "تعریف حلقه جدید"}</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           <input
             value={name}
@@ -168,7 +168,7 @@ export function GroupsManager({ initialGroups }: { initialGroups: GroupItem[] })
           <article key={group.id} className="rounded-2xl bg-white p-5 shadow-sm">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h3 className="text-lg font-semibold">{group.name}</h3>
+                <h3 className="text-sm font-semibold md:text-lg">{group.name}</h3>
                 <p className="text-sm text-zinc-600">{group.description || "بدون توضیح"}</p>
                 <p className="mt-2 text-xs text-zinc-500">تعداد اعضا: {formatFaNumber(group.users.length)}</p>
                 <p className="mt-1 text-xs text-zinc-500">

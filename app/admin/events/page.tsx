@@ -26,7 +26,7 @@ export default async function AdminEventsPage() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-bold text-zinc-900">مدیریت رویدادها</h2>
+      <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">مدیریت رویدادها</h2>
       <EventsManager
         initialEvents={events.map((event) => ({
           id: event.id,

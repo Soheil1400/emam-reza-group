@@ -13,7 +13,7 @@ export default async function AdminGalleriesPage() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-bold text-zinc-900">مدیریت گالری</h2>
+      <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">مدیریت گالری</h2>
       <GalleriesManager
         initialGalleries={galleries.map((gallery) => ({
           id: gallery.id,

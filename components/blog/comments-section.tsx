@@ -89,7 +89,7 @@ export function CommentsSection({
 
   return (
     <section id="comments" className="rounded-3xl bg-white p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-emerald-900">نظرات</h2>
+      <h2 className="text-lg font-bold text-emerald-900 md:text-2xl">نظرات</h2>
 
       {sessionUser ? (
         <form onSubmit={submitComment} className="mt-4 space-y-3">
@@ -103,24 +103,24 @@ export function CommentsSection({
           <button
             type="submit"
             disabled={loading}
-            className="rounded-xl bg-emerald-700 px-4 py-2 text-sm font-medium text-white disabled:opacity-70"
+            className="rounded-xl bg-emerald-700 px-3 py-1.5 text-xs font-medium text-white disabled:opacity-70 md:px-4 md:py-2 md:text-sm"
           >
             {loading ? "در حال ثبت..." : "ثبت نظر"}
           </button>
         </form>
       ) : (
-        <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-sm text-zinc-700">
+        <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-xs text-zinc-700 md:text-sm">
           <p>برای نوشتن نظر، لطفا وارد حساب شوید.</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <Link
               href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}
-              className="rounded-lg border border-emerald-700 px-3 py-2 text-emerald-700"
+              className="rounded-lg border border-emerald-700 px-2.5 py-1.5 text-xs text-emerald-700 md:px-3 md:py-2 md:text-sm"
             >
               ورود
             </Link>
             <Link
               href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
-              className="rounded-lg bg-emerald-700 px-3 py-2 text-white"
+              className="rounded-lg bg-emerald-700 px-2.5 py-1.5 text-xs text-white md:px-3 md:py-2 md:text-sm"
             >
               ثبت نام
             </Link>
@@ -130,15 +130,15 @@ export function CommentsSection({
 
       <div className="mt-6 space-y-3">
         {comments.length === 0 ? (
-          <p className="text-sm text-zinc-600">هنوز نظری ثبت نشده است.</p>
+          <p className="text-xs text-zinc-600 md:text-sm">هنوز نظری ثبت نشده است.</p>
         ) : (
           comments.map((comment) => (
             <article key={comment.id} className="rounded-xl border border-zinc-200 p-3">
-              <p className="text-sm font-medium text-zinc-900">
+              <p className="text-xs font-medium text-zinc-900 md:text-sm">
                 {comment.user.firstName} {comment.user.lastName}
               </p>
-              <p className="mt-1 text-sm leading-7 text-zinc-700">{comment.content}</p>
-              <p className="mt-2 text-xs text-zinc-500">
+              <p className="mt-1 text-xs leading-5 text-zinc-700 md:text-sm md:leading-7">{comment.content}</p>
+              <p className="mt-2 text-[11px] text-zinc-500 md:text-xs">
                 {new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium", timeStyle: "short" }).format(
                   new Date(comment.createdAt),
                 )}

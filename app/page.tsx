@@ -115,20 +115,20 @@ export default async function Home() {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-16 px-4 py-10">
+    <div className="mx-auto w-full max-w-6xl space-y-8 px-4 py-6 md:space-y-16 md:py-10">
         <HeroSlider slides={heroSlides} />
 
-        <h1 className="text-2xl font-black leading-tight text-emerald-700 md:text-4xl">
+        <h1 className="text-xl font-black leading-tight text-emerald-700 md:text-4xl">
           معرفی گروه فرهنگی امام رضا(ع)
         </h1>
 
-        <section className="rounded-3xl bg-white p-6 shadow-md md:p-10">
-          <div className="grid gap-8 md:grid-cols-2 md:items-center">
+        <section className="rounded-3xl bg-white p-4 shadow-md md:p-10">
+          <div className="grid gap-5 md:grid-cols-2 md:items-center md:gap-8">
             <div>
-              <h2 className="text-2xl font-black leading-tight text-emerald-900 md:text-3xl">
+              <h2 className="text-lg font-black leading-tight text-emerald-900 md:text-3xl">
                 فعالیت تربیتی
               </h2>
-              <ul className="mt-4 list-disc space-y-2 pr-5 text-base leading-8 text-zinc-700 marker:text-emerald-700">
+              <ul className="mt-4 list-disc space-y-2 pr-5 text-sm leading-6 text-zinc-700 marker:text-emerald-700 md:text-base md:leading-8">
                 <li>برگزاری نماز های جماعت</li>
                 <li>درس اخلاق</li>
                 <li>برگزاری کلاس های مختلف اعتقادی قرآنی مهارتی</li>
@@ -142,12 +142,12 @@ export default async function Home() {
                 alt="فعالیت تربیتی"
                 className="h-64 w-64 rounded-full border border-emerald-100 object-cover shadow-sm md:h-72 md:w-72"
               />
-              <p className="mt-4 w-64 text-center text-lg font-semibold text-emerald-900 md:w-72">درس اخلاق</p>
-              <p className="mt-1 w-64 text-center text-xl font-black text-emerald-900 md:w-72">آیت الله عطری نژاد</p>
+              <p className="mt-4 w-64 text-center text-sm font-semibold text-emerald-900 md:w-72 md:text-lg">درس اخلاق</p>
+              <p className="mt-1 w-64 text-center text-base font-black text-emerald-900 md:w-72 md:text-xl">آیت الله عطری نژاد</p>
             </div>
           </div>
 
-          <div className="mt-10 grid gap-8 border-t border-emerald-100 pt-8 md:grid-cols-5 md:items-start">
+          <div className="mt-6 grid gap-5 border-t border-emerald-100 pt-5 md:mt-10 md:gap-8 md:pt-8 md:grid-cols-5 md:items-start">
             <div className="order-2 grid grid-cols-2 justify-items-center gap-4 md:order-1 md:col-span-2">
               {culturalImages.map((imageUrl, index) => (
                 <div key={imageUrl} className="overflow-hidden rounded-[12px] border border-emerald-100">
@@ -161,8 +161,8 @@ export default async function Home() {
               ))}
             </div>
             <div className="order-1 md:order-2 md:col-span-3">
-              <h2 className="text-2xl font-black leading-tight text-emerald-900 md:text-3xl">فرهنگی</h2>
-              <ul className="mt-4 list-disc space-y-2 pr-5 text-base leading-8 text-zinc-700 marker:text-emerald-700">
+              <h2 className="text-lg font-black leading-tight text-emerald-900 md:text-3xl">فرهنگی</h2>
+              <ul className="mt-4 list-disc space-y-2 pr-5 text-sm leading-6 text-zinc-700 marker:text-emerald-700 md:text-base md:leading-8">
                 <li>تاسیس گروه سرود و دکلمه خوانی تخصصی (( آوای رئوف ))</li>
                 <li>برگزاری هیئت هفتگی در شب های جمعه</li>
                 <li>گرامیداشت ایام منسوب به اهل بیت علیهم السلام نظیر ولادت ها و شهادت ها</li>
@@ -174,10 +174,10 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-8 border-t border-emerald-100 pt-8 md:grid-cols-2 md:items-start">
+          <div className="mt-6 grid gap-5 border-t border-emerald-100 pt-5 md:mt-10 md:gap-8 md:pt-8 md:grid-cols-2 md:items-start">
             <div className="order-2 md:order-1">
-              <h2 className="text-2xl font-black leading-tight text-emerald-900 md:text-3xl">ورزشی</h2>
-              <ul className="mt-4 list-disc space-y-2 pr-5 text-base leading-8 text-zinc-700 marker:text-emerald-700">
+              <h2 className="text-lg font-black leading-tight text-emerald-900 md:text-3xl">ورزشی</h2>
+              <ul className="mt-4 list-disc space-y-2 pr-5 text-sm leading-6 text-zinc-700 marker:text-emerald-700 md:text-base md:leading-8">
                 <li>برگزاری کلاس های ورزشی نظیر جودو، زورخانه و ...</li>
                 <li>سانس های هفتگی فوتبال، فوتسال، والیبال، استخر</li>
               </ul>
@@ -196,7 +196,7 @@ export default async function Home() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-8 border-t border-emerald-100 pt-8 md:grid-cols-2 md:items-start">
+          <div className="mt-6 grid gap-5 border-t border-emerald-100 pt-5 md:mt-10 md:gap-8 md:pt-8 md:grid-cols-2 md:items-start">
             <div className="order-1 space-y-3 md:order-1">
               <div className="flex justify-center">
                 <div className="w-full max-w-xs overflow-hidden rounded-[12px] border border-emerald-100">
@@ -214,8 +214,8 @@ export default async function Home() {
               </div>
             </div>
             <div className="order-2 md:order-2">
-              <h2 className="text-2xl font-black leading-tight text-emerald-900 md:text-3xl">اردو</h2>
-              <ul className="mt-4 list-disc space-y-2 pr-5 text-base leading-8 text-zinc-700 marker:text-emerald-700">
+              <h2 className="text-lg font-black leading-tight text-emerald-900 md:text-3xl">اردو</h2>
+              <ul className="mt-4 list-disc space-y-2 pr-5 text-sm leading-6 text-zinc-700 marker:text-emerald-700 md:text-base md:leading-8">
                 <li>اردوهای زیارتی: مشهد، کربلا، قم، جمکران، راهیان نور</li>
                 <li>اردوهای تفریحی خارج شهر: شمال، دماوند، شهریار</li>
                 <li>اردوهای تفریحی چند روزه: کوه های کلکچال، شیرپلا، دربند، دارآباد</li>
@@ -225,33 +225,33 @@ export default async function Home() {
         </section>
         <section>
           <div className="mb-4 flex items-center justify-end">
-            <Link href="/galleries" className="text-sm font-semibold text-emerald-800 hover:underline">
+            <Link href="/galleries" className="text-xs font-semibold text-emerald-800 hover:underline md:text-sm">
               مشاهده همه
             </Link>
           </div>
           <GallerySectionSliders galleries={dedupedDynamicGalleries} />
         </section>
 
-        <section className="rounded-3xl bg-white p-6 shadow-md">
+        <section className="rounded-3xl bg-white p-4 shadow-md md:p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-emerald-900">جدیدترین روایت‌ها</h2>
-            <Link href="/blogs" className="text-sm font-semibold text-emerald-800 hover:underline">
+            <h2 className="text-lg font-bold text-emerald-900 md:text-2xl">جدیدترین روایت‌ها</h2>
+            <Link href="/blogs" className="text-xs font-semibold text-emerald-800 hover:underline md:text-sm">
               مشاهده همه
             </Link>
           </div>
           {blogs.length === 0 ? (
             <p className="mt-3 text-zinc-600">هنوز روایتی منتشر نشده است.</p>
           ) : (
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <div className="mt-4 grid gap-3 md:mt-6 md:grid-cols-3 md:gap-4">
               {blogs.map((blog) => (
                 <Link
                   key={blog.id}
                   href={`/blog/${blog.slug}`}
                   className="rounded-2xl border border-zinc-200 p-4 transition hover:border-emerald-600 hover:shadow-sm"
                 >
-                  <h3 className="text-lg font-semibold text-zinc-900">{blog.title}</h3>
-                  <p className="mt-2 line-clamp-3 text-sm text-zinc-600">{blog.excerpt ?? "بدون خلاصه"}</p>
-                  <div className="mt-4 space-y-1 text-xs text-zinc-500">
+                  <h3 className="text-sm font-semibold text-zinc-900 md:text-lg">{blog.title}</h3>
+                  <p className="mt-2 line-clamp-3 text-xs text-zinc-600 md:text-sm">{blog.excerpt ?? "بدون خلاصه"}</p>
+                  <div className="mt-3 space-y-1 text-[11px] text-zinc-500 md:mt-4 md:text-xs">
                     <p className="inline-flex items-center gap-1">
                       <UserRound className="h-3.5 w-3.5" />
                       {blog.author

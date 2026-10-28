@@ -219,7 +219,7 @@ export function UsersManager({
 
           <div className="absolute inset-x-0 bottom-0 max-h-[86vh] overflow-y-auto rounded-t-xl bg-white p-4 shadow-2xl md:hidden">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">پروفایل کاربر</h3>
+              <h3 className="text-sm font-semibold md:text-lg">پروفایل کاربر</h3>
               <button
                 type="button"
                 onClick={() => setActiveProfileUser(null)}
@@ -233,7 +233,7 @@ export function UsersManager({
 
           <div className="absolute top-1/2 left-1/2 hidden w-[min(780px,92vw)] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white p-5 shadow-2xl md:block">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-xl font-semibold">پروفایل کاربر</h3>
+              <h3 className="text-base font-semibold md:text-xl">پروفایل کاربر</h3>
               <button
                 type="button"
                 onClick={() => setActiveProfileUser(null)}

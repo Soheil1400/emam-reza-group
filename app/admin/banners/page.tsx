@@ -10,7 +10,7 @@ export default async function AdminBannersPage() {
 
   return (
     <section className="space-y-4">
-      <h2 className="text-2xl font-bold text-zinc-900">مدیریت بنرهای صفحه اصلی</h2>
+      <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">مدیریت بنرهای صفحه اصلی</h2>
       <BannersManager initialBanners={banners} />
     </section>
   );

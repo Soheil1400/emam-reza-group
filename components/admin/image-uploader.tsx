@@ -166,7 +166,7 @@ export function ImageUploader({ initialHistory }: { initialHistory: AssetHistory
 
   return (
     <section className="space-y-4 rounded-2xl bg-white p-5 shadow-sm">
-      <h2 className="text-xl font-bold">آپلود تصویر</h2>
+      <h2 className="text-base font-bold md:text-xl">آپلود تصویر</h2>
       <p className="text-sm text-zinc-600">
         تصویر را آپلود کنید و لینک تولیدشده را داخل سکشن روایت قرار دهید.
       </p>

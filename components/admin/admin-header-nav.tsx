@@ -31,8 +31,8 @@ export function AdminHeaderNav({ email, role }: { email: string; role: AdminRole
     <header className="border-b border-zinc-200 bg-white">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
         <div>
-          <h1 className="text-xl font-bold text-emerald-900">پنل ادمین</h1>
-          <p className="text-sm text-zinc-600">{email}</p>
+          <h1 className="text-base font-bold text-emerald-900 md:text-xl">پنل ادمین</h1>
+          <p className="text-xs text-zinc-600 md:text-sm">{email}</p>
         </div>
 
         <button
@@ -64,7 +64,7 @@ export function AdminHeaderNav({ email, role }: { email: string; role: AdminRole
           />
           <nav className="absolute inset-y-0 right-0 w-[70%] overflow-y-auto bg-white p-4 shadow-2xl">
             <div className="mb-3 flex items-center justify-between">
-              <p className="text-sm font-semibold text-zinc-700">منوی پنل</p>
+              <p className="text-xs font-semibold text-zinc-700">منوی پنل</p>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -80,7 +80,7 @@ export function AdminHeaderNav({ email, role }: { email: string; role: AdminRole
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl border border-zinc-300 px-4 py-2 text-sm"
+                  className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs"
                 >
                   {item.label}
                 </Link>

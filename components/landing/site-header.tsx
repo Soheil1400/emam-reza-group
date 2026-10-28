@@ -39,7 +39,7 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
             </button>
             <Link href="/" className="flex items-center gap-2">
               <Mosque className="h-5 w-5 text-emerald-800" />
-              <span className="text-base font-extrabold text-emerald-900">گروه فرهنگی امام رضا(ع)</span>
+              <span className="text-sm font-extrabold text-emerald-900 md:text-base">گروه فرهنگی امام رضا(ع)</span>
             </Link>
             <nav className="hidden items-center gap-4 md:flex">
               <Link href="/circles" className="text-sm font-medium text-zinc-700 transition hover:text-emerald-700">
@@ -121,7 +121,7 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
           }`}
         >
             <div className="mb-3 flex items-center justify-between">
-              <p className="text-sm font-semibold text-zinc-700">منوی سایت</p>
+              <p className="text-xs font-semibold text-zinc-700">منوی سایت</p>
               <button
                 type="button"
                 onClick={closeMenu}
@@ -131,22 +131,22 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="flex flex-col gap-2">
-              <Link href="/circles" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+            <div className="flex flex-col gap-2 text-xs [&_a]:text-xs [&_span]:text-xs">
+              <Link href="/circles" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
                 معرفی حلقه‌ها
               </Link>
-              <Link href="/blogs" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+              <Link href="/blogs" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
                 همه روایت‌ها
               </Link>
               <Link
                 href="/events"
                 onClick={closeMenu}
-                className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-4 py-2 text-sm"
+                className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-3 py-1.5 text-xs"
               >
                 <CalendarDays className="h-4 w-4" />
                 رویدادها
               </Link>
-              <Link href="/galleries" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+              <Link href="/galleries" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
                 گالری
               </Link>
               {session ? (
@@ -154,7 +154,7 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                   <Link
                     href="/profile"
                     onClick={closeMenu}
-                    className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-4 py-2 text-sm"
+                    className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-3 py-1.5 text-xs"
                   >
                     <UserCircle2 className="h-4 w-4" />
                     پروفایل
@@ -164,20 +164,20 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                     session.role === "COMMANDER" ||
                     session.role === "CIRCLE_LEAD" ||
                     session.role === "EVENT_MANAGER") && (
-                    <Link href="/admin" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+                    <Link href="/admin" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
                       پنل ادمین
                     </Link>
                   )}
-                  <span className="rounded-xl bg-emerald-100 px-4 py-2 text-sm text-emerald-800">
+                  <span className="rounded-xl bg-emerald-100 px-3 py-1.5 text-xs text-emerald-800">
                     خوش اومدی، {session.name ?? "کاربر"}
                   </span>
                 </>
               ) : (
                 <>
-                  <Link href="/login" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-4 py-2 text-sm">
+                  <Link href="/login" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
                     ورود
                   </Link>
-                  <Link href="/register" onClick={closeMenu} className="rounded-xl bg-emerald-700 px-4 py-2 text-sm text-white">
+                  <Link href="/register" onClick={closeMenu} className="rounded-xl bg-emerald-700 px-3 py-1.5 text-xs text-white">
                     ثبت نام
                   </Link>
                 </>

@@ -15,11 +15,11 @@ export default async function AdminDashboardPage() {
 
     return (
       <section className="space-y-6">
-        <h2 className="text-2xl font-bold text-zinc-900">داشبورد</h2>
+        <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">داشبورد</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="rounded-2xl bg-white p-5 shadow-sm">
             <p className="text-sm text-zinc-500">کل رویدادها</p>
-            <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(eventsCount)}</p>
+            <p className="mt-2 text-2xl font-black text-emerald-800 md:text-3xl">{formatFaNumber(eventsCount)}</p>
           </div>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -41,27 +41,27 @@ export default async function AdminDashboardPage() {
 
   return (
     <section className="space-y-6">
-      <h2 className="text-2xl font-bold text-zinc-900">داشبورد</h2>
+      <h2 className="text-lg font-bold text-zinc-900 md:text-2xl">داشبورد</h2>
       <div className="grid gap-4 md:grid-cols-5">
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <p className="text-sm text-zinc-500">کل کاربران</p>
-          <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(usersCount)}</p>
+          <p className="mt-2 text-2xl font-black text-emerald-800 md:text-3xl">{formatFaNumber(usersCount)}</p>
         </div>
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <p className="text-sm text-zinc-500">کل روایت‌ها</p>
-          <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(blogsCount)}</p>
+          <p className="mt-2 text-2xl font-black text-emerald-800 md:text-3xl">{formatFaNumber(blogsCount)}</p>
         </div>
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <p className="text-sm text-zinc-500">روایت منتشرشده</p>
-          <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(publishedBlogsCount)}</p>
+          <p className="mt-2 text-2xl font-black text-emerald-800 md:text-3xl">{formatFaNumber(publishedBlogsCount)}</p>
         </div>
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <p className="text-sm text-zinc-500">کل رویدادها</p>
-          <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(eventsCount)}</p>
+          <p className="mt-2 text-2xl font-black text-emerald-800 md:text-3xl">{formatFaNumber(eventsCount)}</p>
         </div>
         <div className="rounded-2xl bg-white p-5 shadow-sm">
           <p className="text-sm text-zinc-500">کل گالری‌ها</p>
-          <p className="mt-2 text-3xl font-black text-emerald-800">{formatFaNumber(galleriesCount)}</p>
+          <p className="mt-2 text-2xl font-black text-emerald-800 md:text-3xl">{formatFaNumber(galleriesCount)}</p>
         </div>
       </div>
 

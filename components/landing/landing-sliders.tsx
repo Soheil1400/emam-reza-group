@@ -84,7 +84,7 @@ export function TravelCardsSlider() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <p className="mt-4 text-center text-base font-semibold text-zinc-700">مشهد ۱۴۰۴</p>
+      <p className="mt-4 text-center text-sm font-semibold text-zinc-700 md:text-base">مشهد ۱۴۰۴</p>
     </div>
   );
 }
@@ -110,7 +110,7 @@ function GalleryCardsSlider({ gallery }: { gallery: GalleryWithImages }) {
       </Swiper>
       <Link
         href={`/galleries/${gallery.id}`}
-        className="mt-4 block text-center text-base font-semibold text-zinc-700 transition hover:text-emerald-700"
+        className="mt-4 block text-center text-sm font-semibold text-zinc-700 transition hover:text-emerald-700 md:text-base"
       >
         {gallery.title}
       </Link>
@@ -121,7 +121,7 @@ function GalleryCardsSlider({ gallery }: { gallery: GalleryWithImages }) {
 export function GallerySectionSliders({ galleries }: { galleries: GalleryWithImages[] }) {
   return (
     <div>
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2 md:gap-8">
         <TravelCardsSlider />
         {galleries.map((gallery) => (
           <GalleryCardsSlider key={gallery.id} gallery={gallery} />
