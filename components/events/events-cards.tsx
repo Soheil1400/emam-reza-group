@@ -75,8 +75,10 @@ export function EventsCards({
 
           return (
             <article key={event.id} className="overflow-hidden rounded-3xl bg-white shadow-sm">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={event.imageUrl} alt={event.title} className="h-52 w-full object-cover" />
+              <div className="h-44 w-full overflow-hidden bg-zinc-100 sm:h-52">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={event.imageUrl} alt={event.title} className="h-full w-full object-cover" />
+              </div>
               <div className="p-4">
                 <h2 className="text-xl font-bold text-zinc-900">{event.title}</h2>
                 <p className="mt-2 text-sm leading-7 text-zinc-700">{event.description}</p>

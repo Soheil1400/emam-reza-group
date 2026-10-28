@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 import { getServerSession } from "next-auth";
 
 import { EventsCards } from "@/components/events/events-cards";
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { db, withDbRetry } from "@/lib/db";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -14,17 +13,20 @@ export const metadata: Metadata = buildPageMetadata({
   canonicalPath: "/events",
 });
 
-function toIsoDateTime(value: Date | string | null | undefined) {
+function toIsoDateTime(value: unknown) {
   if (!value) return null;
   if (value instanceof Date) {
     return Number.isNaN(value.getTime()) ? null : value.toISOString();
   }
-  const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+  if (typeof value === "string" || typeof value === "number") {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+  }
+  return null;
 }
 
-const getCachedEvents = unstable_cache(
-  async () =>
+async function loadEvents() {
+  return withDbRetry(() =>
     db.event.findMany({
       orderBy: { createdAt: "desc" },
       include: {
@@ -33,31 +35,50 @@ const getCachedEvents = unstable_cache(
         },
       },
     }),
-  ["public-events-list"],
-  { revalidate: 60 },
-);
+  );
+}
 
 export default async function EventsPage() {
   const session = await getServerSession(authOptions);
 
-  const events = await getCachedEvents();
+  let events: Awaited<ReturnType<typeof loadEvents>> = [];
+  let loadFailed = false;
+  try {
+    events = await loadEvents();
+  } catch (error) {
+    loadFailed = true;
+    console.error("Events page data fetch failed:", error);
+  }
 
-  const joinedEventIds = session?.user?.id
-    ? (
-        await db.eventParticipation.findMany({
-          where: {
-            userId: session.user.id,
-          },
-          select: { eventId: true },
-        })
-      ).map((item) => item.eventId)
-    : [];
+  let joinedEventIds: string[] = [];
+  if (session?.user?.id) {
+    try {
+      joinedEventIds = (
+        await withDbRetry(() =>
+          db.eventParticipation.findMany({
+            where: {
+              userId: session.user.id,
+            },
+            select: { eventId: true },
+          }),
+        )
+      ).map((item) => item.eventId);
+    } catch (error) {
+      console.error("Events participation fetch failed:", error);
+    }
+  }
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10">
       <div className="rounded-3xl bg-emerald-900 px-6 py-8 text-white">
         <h1 className="text-3xl font-black">رویدادهای فرهنگی</h1>
       </div>
+
+      {loadFailed ? (
+        <p className="mt-8 rounded-2xl bg-white p-6 text-zinc-600 shadow-sm">
+          بارگذاری رویدادها موقتاً ممکن نیست. لطفاً چند لحظه بعد صفحه را دوباره باز کنید.
+        </p>
+      ) : null}
 
       <EventsCards
         events={events.map((event) => ({

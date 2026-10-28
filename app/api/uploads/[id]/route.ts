@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db, withDbRetry } from "@/lib/db";
 
 export const revalidate = 31536000;
 
@@ -36,7 +36,7 @@ export async function GET(
     });
   }
 
-  const asset = await db.mediaAsset.findUnique({ where: { id } });
+  const asset = await withDbRetry(() => db.mediaAsset.findUnique({ where: { id } }));
 
   if (!asset) {
     return new Response("Not found", { status: 404 });
