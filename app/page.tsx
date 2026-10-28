@@ -5,6 +5,7 @@ import { CalendarDays, UserRound } from "lucide-react";
 
 import { GallerySectionSliders, HeroSlider } from "@/components/landing/landing-sliders";
 import { db } from "@/lib/db";
+import { formatFaDate } from "@/lib/persian";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -13,13 +14,6 @@ export const metadata: Metadata = buildPageMetadata({
   description: "معرفی گروه فرهنگی امام رضا(ع)، گالری تصاویر و جدیدترین روایت‌ها.",
   canonicalPath: "/",
 });
-
-function formatFaDate(dateValue: Date | string | null | undefined) {
-  if (!dateValue) return "تاریخ نامشخص";
-  const parsedDate = dateValue instanceof Date ? dateValue : new Date(dateValue);
-  if (Number.isNaN(parsedDate.getTime())) return "تاریخ نامشخص";
-  return new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" }).format(parsedDate);
-}
 
 const getCachedHomeData = unstable_cache(
   async () => {

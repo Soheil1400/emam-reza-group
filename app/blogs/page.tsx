@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CalendarDays, UserRound } from "lucide-react";
 
 import { db } from "@/lib/db";
+import { formatFaDate } from "@/lib/persian";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -53,9 +54,7 @@ export default async function BlogsPage() {
               </p>
               <p className="inline-flex items-center gap-1">
                 <CalendarDays className="h-3.5 w-3.5" />
-                {new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" }).format(
-                  blog.publishedAt ?? blog.createdAt,
-                )}
+                {formatFaDate(blog.publishedAt ?? blog.createdAt)}
               </p>
             </div>
           </Link>

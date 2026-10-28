@@ -1,14 +1,42 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
+import { cache } from "react";
 import { CalendarDays, UserRound } from "lucide-react";
 
 import { CommentsSection } from "@/components/blog/comments-section";
 import { authOptions } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { db, withDbRetry } from "@/lib/db";
+import { formatFaDate } from "@/lib/persian";
 import { DEFAULT_DESCRIPTION, SITE_NAME } from "@/lib/seo";
 
 export const revalidate = 300;
+
+const getBlogPost = cache(async (slug: string) => {
+  return withDbRetry(() =>
+    db.blogPost.findUnique({
+      where: { slug },
+      include: {
+        sections: { orderBy: { sortOrder: "asc" } },
+        author: { select: { firstName: true, lastName: true } },
+        comments: {
+          include: {
+            user: {
+              select: { firstName: true, lastName: true },
+            },
+          },
+          orderBy: { createdAt: "desc" },
+        },
+      },
+    }),
+  );
+});
+
+function toIsoDateTime(value: unknown) {
+  if (!value) return "";
+  const parsed = value instanceof Date ? value : new Date(String(value));
+  return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString();
+}
 
 export async function generateMetadata({
   params,
@@ -16,14 +44,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = await db.blogPost.findUnique({
-    where: { slug },
-    select: {
-      title: true,
-      excerpt: true,
-      isPublished: true,
-    },
-  });
+  let post: Awaited<ReturnType<typeof getBlogPost>> = null;
+  try {
+    post = await getBlogPost(slug);
+  } catch (error) {
+    console.error("Blog metadata fetch failed:", error);
+  }
 
   if (!post || !post.isPublished) {
     return {
@@ -63,21 +89,19 @@ export default async function BlogPostPage({
   const { slug } = await params;
   const session = await getServerSession(authOptions);
 
-  const post = await db.blogPost.findUnique({
-    where: { slug },
-    include: {
-      sections: { orderBy: { sortOrder: "asc" } },
-      author: { select: { firstName: true, lastName: true } },
-      comments: {
-        include: {
-          user: {
-            select: { firstName: true, lastName: true },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-      },
-    },
-  });
+  let post: Awaited<ReturnType<typeof getBlogPost>> = null;
+  try {
+    post = await getBlogPost(slug);
+  } catch (error) {
+    console.error("Blog page data fetch failed:", error);
+    return (
+      <main className="mx-auto w-full max-w-4xl px-4 py-6 md:py-10">
+        <p className="rounded-2xl bg-white p-4 text-xs text-zinc-600 shadow-sm md:p-6 md:text-sm">
+          بارگذاری این روایت موقتاً ممکن نیست. لطفاً چند لحظه بعد صفحه را دوباره باز کنید.
+        </p>
+      </main>
+    );
+  }
 
   if (!post || !post.isPublished) {
     notFound();
@@ -108,9 +132,7 @@ export default async function BlogPostPage({
             </div>
             <span className="inline-flex items-center gap-1">
               <CalendarDays className="h-4 w-4" />
-              {new Intl.DateTimeFormat("fa-IR", { dateStyle: "full" }).format(
-                post.publishedAt ?? post.createdAt,
-              )}
+              {formatFaDate(post.publishedAt ?? post.createdAt, { dateStyle: "full" })}
             </span>
           </div>
         </header>
@@ -147,7 +169,7 @@ export default async function BlogPostPage({
           initialComments={post.comments.map((comment) => ({
             id: comment.id,
             content: comment.content,
-            createdAt: comment.createdAt.toISOString(),
+            createdAt: toIsoDateTime(comment.createdAt),
             user: {
               firstName: comment.user.firstName,
               lastName: comment.user.lastName,

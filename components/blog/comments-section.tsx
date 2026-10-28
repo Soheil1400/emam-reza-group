@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 
 import { Snackbar } from "@/components/ui/snackbar";
+import { formatFaDate } from "@/lib/persian";
 
 type CommentItem = {
   id: string;
@@ -139,9 +140,7 @@ export function CommentsSection({
               </p>
               <p className="mt-1 text-xs leading-5 text-zinc-700 md:text-sm md:leading-7">{comment.content}</p>
               <p className="mt-2 text-[11px] text-zinc-500 md:text-xs">
-                {new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium", timeStyle: "short" }).format(
-                  new Date(comment.createdAt),
-                )}
+                {formatFaDate(comment.createdAt, { dateStyle: "medium", timeStyle: "short" })}
               </p>
             </article>
           ))

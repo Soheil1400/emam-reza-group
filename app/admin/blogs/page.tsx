@@ -4,7 +4,7 @@ import { CalendarDays, CheckCircle2, PenSquare, UserRound } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/lib/admin";
-import { formatFaNumber } from "@/lib/persian";
+import { formatFaDate, formatFaNumber } from "@/lib/persian";
 
 export const dynamic = "force-dynamic";
 
@@ -67,9 +67,7 @@ export default async function AdminBlogsPage() {
                 </p>
                 <p className="mt-1 inline-flex items-center gap-1 text-xs text-zinc-500">
                   <CalendarDays className="h-3.5 w-3.5" />
-                  {new Intl.DateTimeFormat("fa-IR", { dateStyle: "medium" }).format(
-                    blog.publishedAt ?? blog.createdAt,
-                  )}
+                  {formatFaDate(blog.publishedAt ?? blog.createdAt)}
                 </p>
                 <p className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-emerald-700">
                   <CheckCircle2 className="h-3.5 w-3.5" />

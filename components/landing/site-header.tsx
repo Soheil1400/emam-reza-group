@@ -1,7 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { CalendarDays, LogIn, Menu, Mosque, UserCircle2, X } from "lucide-react";
+import {
+  BookOpenText,
+  CalendarDays,
+  Images,
+  LayoutDashboard,
+  LogIn,
+  Menu,
+  Mosque,
+  UserCircle2,
+  UserPlus,
+  Users,
+  X,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 type HeaderSession = {
@@ -121,7 +133,7 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
           }`}
         >
             <div className="mb-3 flex items-center justify-between">
-              <p className="text-xs font-semibold text-zinc-700">منوی سایت</p>
+              <p className="text-sm font-semibold text-zinc-700">منوی سایت</p>
               <button
                 type="button"
                 onClick={closeMenu}
@@ -131,22 +143,37 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="flex flex-col gap-2 text-xs [&_a]:text-xs [&_span]:text-xs">
-              <Link href="/circles" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/circles"
+                onClick={closeMenu}
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+              >
+                <Users className="h-4 w-4 shrink-0" />
                 معرفی حلقه‌ها
               </Link>
-              <Link href="/blogs" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
+              <Link
+                href="/blogs"
+                onClick={closeMenu}
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+              >
+                <BookOpenText className="h-4 w-4 shrink-0" />
                 همه روایت‌ها
               </Link>
               <Link
                 href="/events"
                 onClick={closeMenu}
-                className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-3 py-1.5 text-xs"
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
               >
-                <CalendarDays className="h-4 w-4" />
+                <CalendarDays className="h-4 w-4 shrink-0" />
                 رویدادها
               </Link>
-              <Link href="/galleries" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
+              <Link
+                href="/galleries"
+                onClick={closeMenu}
+                className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+              >
+                <Images className="h-4 w-4 shrink-0" />
                 گالری
               </Link>
               {session ? (
@@ -154,9 +181,9 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                   <Link
                     href="/profile"
                     onClick={closeMenu}
-                    className="inline-flex items-center gap-1 rounded-xl border border-zinc-300 px-3 py-1.5 text-xs"
+                    className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
                   >
-                    <UserCircle2 className="h-4 w-4" />
+                    <UserCircle2 className="h-4 w-4 shrink-0" />
                     پروفایل
                   </Link>
                   {(session.role === "ADMIN" ||
@@ -164,20 +191,35 @@ export function SiteHeader({ session }: { session: HeaderSession }) {
                     session.role === "COMMANDER" ||
                     session.role === "CIRCLE_LEAD" ||
                     session.role === "EVENT_MANAGER") && (
-                    <Link href="/admin" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
+                    <Link
+                      href="/admin"
+                      onClick={closeMenu}
+                      className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+                    >
+                      <LayoutDashboard className="h-4 w-4 shrink-0" />
                       پنل ادمین
                     </Link>
                   )}
-                  <span className="rounded-xl bg-emerald-100 px-3 py-1.5 text-xs text-emerald-800">
+                  <span className="rounded-xl bg-emerald-100 px-3 py-2 text-sm text-emerald-800">
                     خوش اومدی، {session.name ?? "کاربر"}
                   </span>
                 </>
               ) : (
                 <>
-                  <Link href="/login" onClick={closeMenu} className="rounded-xl border border-zinc-300 px-3 py-1.5 text-xs">
+                  <Link
+                    href="/login"
+                    onClick={closeMenu}
+                    className="inline-flex items-center gap-2 rounded-xl border border-zinc-300 px-3 py-2 text-sm"
+                  >
+                    <LogIn className="h-4 w-4 shrink-0" />
                     ورود
                   </Link>
-                  <Link href="/register" onClick={closeMenu} className="rounded-xl bg-emerald-700 px-3 py-1.5 text-xs text-white">
+                  <Link
+                    href="/register"
+                    onClick={closeMenu}
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 px-3 py-2 text-sm text-white"
+                  >
+                    <UserPlus className="h-4 w-4 shrink-0" />
                     ثبت نام
                   </Link>
                 </>
