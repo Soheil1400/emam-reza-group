@@ -2,11 +2,40 @@ import { db } from "@/lib/db";
 
 export const revalidate = 31536000;
 
+type CachedMedia = {
+  mimeType: string;
+  buffer: Buffer;
+  cachedAt: number;
+};
+
+const MEDIA_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const MEDIA_CACHE_MAX_ITEMS = 300;
+
+const globalMediaCache = globalThis as unknown as {
+  mediaAssetCache?: Map<string, CachedMedia>;
+};
+
+const mediaAssetCache = globalMediaCache.mediaAssetCache ?? new Map<string, CachedMedia>();
+globalMediaCache.mediaAssetCache = mediaAssetCache;
+
 export async function GET(
   _request: Request,
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
+  const now = Date.now();
+  const cached = mediaAssetCache.get(id);
+
+  if (cached && now - cached.cachedAt < MEDIA_CACHE_TTL_MS) {
+    return new Response(cached.buffer, {
+      status: 200,
+      headers: {
+        "Content-Type": cached.mimeType,
+        "Cache-Control": "public, max-age=31536000, s-maxage=31536000, stale-while-revalidate=86400, immutable",
+      },
+    });
+  }
+
   const asset = await db.mediaAsset.findUnique({ where: { id } });
 
   if (!asset) {
@@ -14,6 +43,19 @@ export async function GET(
   }
 
   const buffer = Buffer.from(asset.data, "base64");
+  mediaAssetCache.set(id, {
+    mimeType: asset.mimeType,
+    buffer,
+    cachedAt: now,
+  });
+
+  if (mediaAssetCache.size > MEDIA_CACHE_MAX_ITEMS) {
+    const oldestKey = mediaAssetCache.keys().next().value;
+    if (oldestKey) {
+      mediaAssetCache.delete(oldestKey);
+    }
+  }
+
   return new Response(buffer, {
     status: 200,
     headers: {
