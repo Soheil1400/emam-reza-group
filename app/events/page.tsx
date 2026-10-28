@@ -14,6 +14,15 @@ export const metadata: Metadata = buildPageMetadata({
   canonicalPath: "/events",
 });
 
+function toIsoDateTime(value: Date | string | null | undefined) {
+  if (!value) return null;
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value.toISOString();
+  }
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+}
+
 const getCachedEvents = unstable_cache(
   async () =>
     db.event.findMany({
@@ -57,7 +66,7 @@ export default async function EventsPage() {
           imageUrl: event.imageUrl,
           description: event.description,
           location: event.location,
-          eventTime: event.eventTime ? event.eventTime.toISOString() : null,
+          eventTime: toIsoDateTime(event.eventTime),
           isRegistrationOpen: event.isRegistrationOpen,
           participantsCount: event._count.participants,
         }))}

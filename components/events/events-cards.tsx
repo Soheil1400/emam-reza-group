@@ -18,6 +18,12 @@ type EventCard = {
   participantsCount: number;
 };
 
+function formatEventDateTime(value: string) {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return null;
+  return parsed.toLocaleString("fa-IR");
+}
+
 export function EventsCards({
   events,
   joinedEventIds,
@@ -75,11 +81,11 @@ export function EventsCards({
                 <h2 className="text-xl font-bold text-zinc-900">{event.title}</h2>
                 <p className="mt-2 text-sm leading-7 text-zinc-700">{event.description}</p>
                 {event.location ? <p className="mt-1 text-xs text-zinc-600">مکان: {event.location}</p> : null}
-                {event.eventTime ? (
-                  <p className="mt-1 text-xs text-zinc-600">
-                    زمان: {new Date(event.eventTime).toLocaleString("fa-IR")}
-                  </p>
-                ) : null}
+                {event.eventTime ? (() => {
+                  const formatted = formatEventDateTime(event.eventTime);
+                  if (!formatted) return null;
+                  return <p className="mt-1 text-xs text-zinc-600">زمان: {formatted}</p>;
+                })() : null}
                 <p className="mt-1 inline-flex items-center gap-1 text-xs text-zinc-600">
                   <Users className="h-3.5 w-3.5" />
                   تعداد شرکت‌کننده‌ها: {new Intl.NumberFormat("fa-IR").format(event.participantsCount)}
